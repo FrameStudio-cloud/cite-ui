@@ -1,0 +1,6 @@
+{
+  "buildCommand": "npm run docs:build",
+  "outputDirectory": "dist-docs",
+  "framework": null,
+  "devCommand": "npm run docs:dev"
+}
