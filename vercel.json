@@ -1,5 +1,5 @@
 {
-  "buildCommand": "npx vite build --config vite.docs.config.js",
+  "buildCommand": "node node_modules/vite/bin/vite.js build --config vite.docs.config.js",
   "outputDirectory": "dist-docs",
   "framework": null
 }
