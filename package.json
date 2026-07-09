@@ -19,7 +19,7 @@
     "build": "vite build",
     "preview": "vite preview",
     "docs:dev": "vite --open /docs.html",
-    "docs:build": "vite build --config vite.docs.config.js"
+    "docs:build": "npx vite build --config vite.docs.config.js"
   },
   "peerDependencies": {
     "react": "^18.0.0",

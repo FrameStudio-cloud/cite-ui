@@ -1,6 +1,5 @@
 {
-  "buildCommand": "npm run docs:build",
+  "buildCommand": "npx vite build --config vite.docs.config.js",
   "outputDirectory": "dist-docs",
-  "framework": null,
-  "devCommand": "npm run docs:dev"
+  "framework": null
 }
