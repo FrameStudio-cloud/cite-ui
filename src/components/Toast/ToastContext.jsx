@@ -1,28 +1,13 @@
 import { createContext, useContext, useState, useCallback, useRef } from 'react'
+import { Icon } from '../Icon'
 
 const ToastContext = createContext(null)
 
 const ICONS = {
-  success: (
-    <svg className="w-5 h-5 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-    </svg>
-  ),
-  error: (
-    <svg className="w-5 h-5 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-    </svg>
-  ),
-  warning: (
-    <svg className="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z" />
-    </svg>
-  ),
-  info: (
-    <svg className="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-    </svg>
-  ),
+  success: <Icon name="check" size={18} className="text-emerald-500" />,
+  error: <Icon name="x" size={18} className="text-red-500" />,
+  warning: <Icon name="alertTriangle" size={18} className="text-amber-500" />,
+  info: <Icon name="info" size={18} className="text-blue-500" />,
 }
 
 const BORDER_CLASSES = {
@@ -88,6 +73,18 @@ export const ToastProvider = ({ children, position = 'top-right' }) => {
     error: (message, options) => addToast('error', message, options),
     warning: (message, options) => addToast('warning', message, options),
     info: (message, options) => addToast('info', message, options),
+    promise: (promise, { loading, success, error }) => {
+      const id = addToast('info', loading, { duration: Infinity })
+      promise
+        .then((res) => {
+          dismiss(id)
+          toast.success(typeof success === 'function' ? success(res) : success)
+        })
+        .catch((err) => {
+          dismiss(id)
+          toast.error(typeof error === 'function' ? error(err) : error)
+        })
+    },
   }
 
   return (
@@ -97,17 +94,12 @@ export const ToastProvider = ({ children, position = 'top-right' }) => {
         {toasts.map((t) => (
           <div
             key={t.id}
-            className={`flex items-start gap-3 bg-white rounded-lg shadow-lg border-l-4 ${BORDER_CLASSES[t.type]} p-4 animate-[slideIn_0.25s_ease-out]`}
+            className={`flex items-start gap-3 bg-white dark:bg-gray-900 rounded-xl shadow-lg border border-gray-100 dark:border-gray-800 border-l-4 ${BORDER_CLASSES[t.type]} p-4 animate-[slideIn_0.25s_ease-out]`}
           >
             <span className="flex-shrink-0 mt-0.5">{ICONS[t.type]}</span>
-            <p className="flex-1 text-sm text-gray-800">{t.message}</p>
-            <button
-              onClick={() => dismiss(t.id)}
-              className="flex-shrink-0 text-gray-400 hover:text-gray-600"
-            >
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              </svg>
+            <p className="flex-1 text-sm text-gray-800 dark:text-gray-200">{t.message}</p>
+            <button onClick={() => dismiss(t.id)} className="flex-shrink-0 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors">
+              <Icon name="x" size={14} />
             </button>
           </div>
         ))}

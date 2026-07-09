@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 
 const colMap = {
   1: 'lg:grid-cols-1',
@@ -9,34 +9,50 @@ const colMap = {
   6: 'lg:grid-cols-6',
 }
 
-const Gallery = ({ images = [], columns = 3, gap = 4 }) => {
+const Gallery = ({ images = [], columns = 3, gap = 4, lightbox = true }) => {
   const [selected, setSelected] = useState(null)
+
+  const close = useCallback(() => setSelected(null), [])
+
+  useEffect(() => {
+    if (!selected) return
+    const handler = (e) => { if (e.key === 'Escape') close() }
+    document.addEventListener('keydown', handler)
+    document.body.style.overflow = 'hidden'
+    return () => {
+      document.removeEventListener('keydown', handler)
+      document.body.style.overflow = ''
+    }
+  }, [selected, close])
 
   return (
     <>
       <div
-        className={`grid grid-cols-1 sm:grid-cols-2 ${colMap[columns] || ''}`}
-        style={{ gap: `${gap * 0.25}rem` }}
+        className={`grid grid-cols-1 sm:grid-cols-2 ${colMap[Math.min(columns, 6)] || ''}`}
+        style={{ gap: `${Math.max(gap, 0) * 0.25}rem` }}
       >
         {images.map((img, i) => (
-          <img
-            key={i}
-            src={img.src}
-            alt={img.alt}
-            className="w-full h-64 object-cover rounded-lg cursor-pointer"
-            onClick={() => setSelected(img)}
-          />
+          <div key={i} className="overflow-hidden rounded-lg">
+            <img
+              src={img.src}
+              alt={img.alt}
+              loading="lazy"
+              className="w-full h-64 object-cover cursor-pointer hover:scale-105 transition-transform duration-300"
+              onClick={() => lightbox && setSelected(img)}
+            />
+          </div>
         ))}
       </div>
 
-      {selected && (
+      {selected && lightbox && (
         <div
-          className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center"
-          onClick={() => setSelected(null)}
+          className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4"
+          onClick={close}
         >
           <button
-            className="absolute top-4 right-4 text-white text-4xl leading-none hover:opacity-70"
-            onClick={() => setSelected(null)}
+            className="absolute top-4 right-4 text-white/70 hover:text-white text-3xl leading-none p-2 z-10"
+            onClick={close}
+            aria-label="Close lightbox"
           >
             &times;
           </button>

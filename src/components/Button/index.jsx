@@ -1,40 +1,64 @@
+import { Icon } from '../Icon'
+
 const variantStyles = {
-  primary:
-    "bg-black text-white shadow-md hover:shadow-lg hover:bg-gray-800 active:scale-95 transition-all duration-200 rounded-lg px-6 py-3",
-  secondary:
-    "bg-transparent border border-black text-black shadow-sm hover:shadow-md hover:bg-black hover:text-white active:scale-95 transition-all duration-200 rounded-lg px-6 py-3",
-  whatsapp:
-    "bg-[#25D366] text-white shadow-md hover:shadow-lg hover:bg-[#1ebe5d] active:scale-95 transition-all duration-200 rounded-lg px-6 py-3",
-};
-const WhatsAppIcon = () => (
-  <svg viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4">
-    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z" />
-    <path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.126 1.532 5.862L.054 23.446a.75.75 0 00.917.899l5.698-1.451A11.955 11.955 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22.5A10.5 10.5 0 011.5 12 10.5 10.5 0 0112 1.5 10.5 10.5 0 0122.5 12 10.5 10.5 0 0112 22.5z" />
-  </svg>
-);
+  primary: 'bg-black text-white shadow-sm hover:bg-gray-800 active:scale-[0.98] transition-all duration-150 rounded-lg',
+  secondary: 'bg-transparent border border-gray-300 text-gray-900 hover:bg-gray-100 active:scale-[0.98] transition-all duration-150 rounded-lg',
+  outline: 'bg-transparent border border-black text-black hover:bg-black hover:text-white active:scale-[0.98] transition-all duration-150 rounded-lg',
+  ghost: 'bg-transparent text-gray-600 hover:text-black hover:bg-gray-100 active:scale-[0.98] transition-all duration-150 rounded-lg',
+  danger: 'bg-red-600 text-white shadow-sm hover:bg-red-700 active:scale-[0.98] transition-all duration-150 rounded-lg',
+  whatsapp: 'bg-[#25D366] text-white shadow-sm hover:bg-[#1ebe5d] active:scale-[0.98] transition-all duration-150 rounded-lg',
+}
 
 const sizeStyles = {
-  sm: "text-sm px-4 py-2",
-  md: "text-base px-6 py-3",
-  lg: "text-lg px-8 py-4",
-};
+  xs: 'text-xs px-3 py-1.5 gap-1.5',
+  sm: 'text-sm px-4 py-2 gap-2',
+  md: 'text-base px-5 py-2.5 gap-2',
+  lg: 'text-lg px-6 py-3 gap-2.5',
+  xl: 'text-xl px-8 py-4 gap-3',
+}
+
+const SpinnerIcon = () => (
+  <svg className="animate-spin" width="1em" height="1em" viewBox="0 0 24 24" fill="none">
+    <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" opacity="0.25" />
+    <path d="M12 2a10 10 0 019.95 9" stroke="currentColor" strokeWidth="4" strokeLinecap="round" />
+  </svg>
+)
 
 const Button = ({
-  variant = "primary",
-  size = "md",
+  variant = 'primary',
+  size = 'md',
   label,
   onClick,
-  className = "",
+  type = 'button',
+  disabled = false,
+  loading = false,
+  icon,
+  iconPosition = 'left',
+  href,
+  className = '',
+  children,
 }) => {
-  return (
-    <button
-      onClick={onClick}
-      className={`flex items-center gap-2 ${variantStyles[variant]} ${sizeStyles[size]} ${className}`}
-    >
-      {variant === "whatsapp" && <WhatsAppIcon />}
-      {label}
-    </button>
-  );
-};
+  const classes = `inline-flex items-center justify-center font-medium ${variantStyles[variant] || variantStyles.primary} ${sizeStyles[size] || sizeStyles.md} ${disabled || loading ? 'opacity-50 cursor-not-allowed pointer-events-none' : 'cursor-pointer'} ${className}`
+
+  const content = (
+    <>
+      {loading ? (
+        <SpinnerIcon />
+      ) : icon && iconPosition === 'left' ? (
+        typeof icon === 'string' ? <Icon name={icon} size={size === 'xs' ? 14 : size === 'sm' ? 16 : size === 'lg' ? 20 : 18} /> : icon
+      ) : null}
+      {(label || children) && <span>{label || children}</span>}
+      {!loading && icon && iconPosition === 'right' ? (
+        typeof icon === 'string' ? <Icon name={icon} size={size === 'xs' ? 14 : size === 'sm' ? 16 : size === 'lg' ? 20 : 18} /> : icon
+      ) : null}
+    </>
+  )
+
+  if (href) {
+    return <a href={href} className={classes}>{content}</a>
+  }
+
+  return <button type={type} onClick={onClick} disabled={disabled || loading} className={classes}>{content}</button>
+}
 
 export default Button

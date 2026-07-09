@@ -1,143 +1,119 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { Icon } from '../Icon'
 
 const Navbar = ({
   logo,
   links = [],
   ctaLabel,
   ctaHref,
+  ctaVariant = 'primary',
   variant = 'default',
   cartCount = 0,
   onCartClick,
+  whatsapp,
+  className = '',
 }) => {
   const [open, setOpen] = useState(false)
+  const [scrolled, setScrolled] = useState(false)
   const isGlass = variant === 'glass'
+  const isTransparent = variant === 'transparent'
 
-  const glassStyles = isGlass
-    ? {
-        background: 'rgba(255,255,255,0.7)',
-        backdropFilter: 'blur(12px)',
-        WebkitBackdropFilter: 'blur(12px)',
-        borderBottom: '1px solid rgba(255,255,255,0.3)',
-      }
-    : {}
+  useEffect(() => {
+    const handler = () => setScrolled(window.scrollY > 10)
+    window.addEventListener('scroll', handler, { passive: true })
+    return () => window.removeEventListener('scroll', handler)
+  }, [])
+
+  const glassStyles = isGlass ? {
+    background: scrolled ? 'rgba(255,255,255,0.85)' : 'rgba(255,255,255,0.6)',
+    backdropFilter: 'blur(16px)',
+    WebkitBackdropFilter: 'blur(16px)',
+    borderBottom: scrolled ? '1px solid rgba(255,255,255,0.3)' : '1px solid transparent',
+  } : {}
+
+  const transparentStyles = isTransparent ? {
+    background: scrolled ? 'rgba(255,255,255,0.95)' : 'transparent',
+    borderBottom: scrolled ? '1px solid rgba(0,0,0,0.08)' : '1px solid transparent',
+  } : {}
+
+  const textColor = isTransparent && !scrolled ? 'text-white' : 'text-gray-900 dark:text-white'
+  const linkColor = isTransparent && !scrolled ? 'text-white/80 hover:text-white' : 'text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white'
+  const bgClass = isGlass ? '' : isTransparent ? '' : scrolled ? 'bg-white/95 backdrop-blur-sm border-b border-gray-200' : 'bg-white border-b border-gray-200'
+
+  const navLinks = (
+    <>
+      {links.map((link, i) => (
+        <a key={i} href={link.href} className={`text-sm transition-colors whitespace-nowrap ${linkColor}`}>
+          {link.label}
+        </a>
+      ))}
+    </>
+  )
 
   return (
-    <nav
-      className={`sticky top-0 z-50 ${isGlass ? '' : 'bg-white border-b border-gray-200'}`}
-      style={glassStyles}
-    >
+    <nav className={`sticky top-0 z-50 transition-all duration-300 ${bgClass} ${className}`} style={{ ...glassStyles, ...transparentStyles }}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16 relative">
-          <div className="flex-shrink-0 text-xl font-bold tracking-tight">{logo}</div>
-
-          <div
-            className={`items-center gap-8 ${
-              isGlass
-                ? 'absolute left-1/2 -translate-x-1/2 hidden md:flex'
-                : 'hidden md:flex'
-            }`}
-          >
-            {links.map((link, i) => (
-              <a
-                key={i}
-                href={link.href}
-                className="text-gray-600 hover:text-black transition-colors"
-              >
-                {link.label}
-              </a>
-            ))}
+        <div className="flex items-center justify-between h-16">
+          <div className={`flex-shrink-0 text-xl font-bold tracking-tight transition-colors ${textColor}`}>
+            {typeof logo === 'string' ? logo : logo}
           </div>
 
-          <div className="flex items-center gap-4">
-            {isGlass ? (
-              <button
-                onClick={onCartClick}
-                className="relative p-2 text-gray-600 hover:text-black transition-colors"
-              >
-                <svg
-                  className="w-6 h-6"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 100 4 2 2 0 000-4z"
-                  />
-                </svg>
+          <div className="hidden md:flex items-center gap-8">
+            {navLinks}
+          </div>
+
+          <div className="flex items-center gap-3">
+            {onCartClick && (
+              <button onClick={onCartClick} className={`relative p-2 transition-colors ${linkColor}`} aria-label="Cart">
+                <Icon name="cart" size={20} />
                 {cartCount > 0 && (
-                  <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center font-medium">
-                    {cartCount}
+                  <span className="absolute -top-0.5 -right-0.5 bg-red-500 text-white text-[10px] w-4.5 h-4.5 rounded-full flex items-center justify-center font-medium min-w-[18px] min-h-[18px] text-xs">
+                    {cartCount > 99 ? '99+' : cartCount}
                   </span>
                 )}
               </button>
-            ) : (
-              ctaLabel &&
-              ctaHref && (
-                <a
-                  href={ctaHref}
-                  className="hidden md:inline-block bg-black text-white rounded-lg px-5 py-2 text-sm font-medium hover:bg-gray-800 transition-colors"
-                >
-                  {ctaLabel}
-                </a>
-              )
             )}
 
-            <button
-              onClick={() => setOpen((v) => !v)}
-              className="md:hidden p-2 rounded-md text-gray-600 hover:text-black transition-colors"
-              aria-label="Toggle menu"
-            >
-              <svg
-                className="w-6 h-6"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
+            {whatsapp && (
+              <a
+                href={`https://wa.me/${whatsapp}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={`hidden md:flex items-center gap-1.5 text-sm transition-colors ${linkColor}`}
               >
-                {open ? (
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M6 18L18 6M6 6l12 12"
-                  />
-                ) : (
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M4 6h16M4 12h16M4 18h16"
-                  />
-                )}
-              </svg>
+                <Icon name="messageCircle" size={16} />
+                <span>WhatsApp</span>
+              </a>
+            )}
+
+            {ctaLabel && ctaHref && (
+              <a href={ctaHref} className={`hidden md:inline-flex items-center justify-center font-medium rounded-lg transition-all duration-150 ${ctaVariant === 'primary' ? 'bg-black text-white hover:bg-gray-800 dark:bg-white dark:text-gray-900 dark:hover:bg-gray-200' : 'border border-gray-300 text-gray-900 hover:bg-gray-100 dark:border-gray-600 dark:text-gray-200 dark:hover:bg-gray-800'} text-sm px-4 py-2`}>
+                {ctaLabel}
+              </a>
+            )}
+
+            <button onClick={() => setOpen(!open)} className={`md:hidden p-2 rounded-lg transition-colors ${linkColor} hover:bg-white/10`} aria-label="Toggle menu">
+              <Icon name={open ? 'x' : 'menu'} size={20} />
             </button>
           </div>
         </div>
       </div>
 
       {open && (
-        <div
-          className="md:hidden border-t px-4 pb-4 pt-2 space-y-3"
-          style={{
-            borderColor: isGlass ? 'rgba(255,255,255,0.3)' : '#e5e7eb',
-          }}
-        >
+        <div className="md:hidden border-t border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 px-4 pb-4 pt-2 space-y-2">
           {links.map((link, i) => (
-            <a
-              key={i}
-              href={link.href}
-              className="block text-gray-600 hover:text-black transition-colors"
-            >
+            <a key={i} href={link.href} className="block px-3 py-2 text-sm text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white hover:bg-gray-50 dark:hover:bg-gray-800 rounded-lg transition-colors">
               {link.label}
             </a>
           ))}
-          {!isGlass && ctaLabel && ctaHref && (
-            <a
-              href={ctaHref}
-              className="block text-center bg-black text-white rounded-lg px-5 py-2 text-sm font-medium hover:bg-gray-800 transition-colors"
-            >
+          {whatsapp && (
+            <a href={`https://wa.me/${whatsapp}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 px-3 py-2 text-sm text-emerald-600 hover:bg-emerald-50 dark:hover:bg-emerald-900/20 rounded-lg transition-colors">
+              <Icon name="messageCircle" size={16} />
+              WhatsApp
+            </a>
+          )}
+          {ctaLabel && ctaHref && (
+            <a href={ctaHref} className="block text-center bg-black text-white dark:bg-white dark:text-gray-900 rounded-lg px-5 py-2 text-sm font-medium hover:bg-gray-800 dark:hover:bg-gray-200 transition-colors mt-2">
               {ctaLabel}
             </a>
           )}

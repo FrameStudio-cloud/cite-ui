@@ -1,5 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 export default {
+  darkMode: 'class',
   content: ['./src/**/*.{js,jsx,ts,tsx}'],
   theme: {
     extend: {
@@ -7,6 +8,34 @@ export default {
         slideIn: {
           from: { opacity: '0', transform: 'translateX(1rem)' },
           to:   { opacity: '1', transform: 'translateX(0)' },
+        },
+        fadeScaleIn: {
+          from: { opacity: '0', transform: 'scale(0.95)' },
+          to:   { opacity: '1', transform: 'scale(1)' },
+        },
+        fadeIn: {
+          from: { opacity: '0' },
+          to:   { opacity: '1' },
+        },
+        slideUp: {
+          from: { opacity: '0', transform: 'translateY(20px)' },
+          to:   { opacity: '1', transform: 'translateY(0)' },
+        },
+        slideDown: {
+          from: { opacity: '0', transform: 'translateY(-20px)' },
+          to:   { opacity: '1', transform: 'translateY(0)' },
+        },
+        slideLeft: {
+          from: { opacity: '0', transform: 'translateX(20px)' },
+          to:   { opacity: '1', transform: 'translateX(0)' },
+        },
+        slideRight: {
+          from: { opacity: '0', transform: 'translateX(-20px)' },
+          to:   { opacity: '1', transform: 'translateX(0)' },
+        },
+        scaleIn: {
+          from: { opacity: '0', transform: 'scale(0.9)' },
+          to:   { opacity: '1', transform: 'scale(1)' },
         },
       },
     },

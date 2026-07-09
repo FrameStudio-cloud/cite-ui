@@ -1,37 +1,76 @@
-import Button from './Button'
+import { useEffect, useRef } from 'react'
+import { Icon } from './Icon'
 
-const Modal = ({ isOpen, onClose, product, actionLabel = 'View Details', onAction }) => {
+const sizeMap = {
+  sm: 'max-w-sm',
+  md: 'max-w-md',
+  lg: 'max-w-lg',
+  xl: 'max-w-xl',
+  '2xl': 'max-w-2xl',
+  '3xl': 'max-w-3xl',
+  full: 'max-w-[90vw]',
+}
+
+const Modal = ({
+  isOpen,
+  onClose,
+  title,
+  children,
+  footer,
+  size = 'md',
+  closeOnOverlay = true,
+  showClose = true,
+}) => {
+  const overlayRef = useRef(null)
+
+  useEffect(() => {
+    if (!isOpen) return
+    const handler = (e) => { if (e.key === 'Escape') onClose() }
+    document.addEventListener('keydown', handler)
+    document.body.style.overflow = 'hidden'
+    return () => {
+      document.removeEventListener('keydown', handler)
+      document.body.style.overflow = ''
+    }
+  }, [isOpen, onClose])
+
   if (!isOpen) return null
 
   return (
     <div
-      className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center"
-      onClick={onClose}
+      ref={overlayRef}
+      className="fixed inset-0 z-50 flex items-center justify-center p-4"
+      onClick={(e) => { if (closeOnOverlay && e.target === overlayRef.current) onClose() }}
     >
+      <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" />
       <div
-        className="bg-white rounded-2xl shadow-xl w-full max-w-md mx-4 p-6 overflow-y-auto max-h-[90vh] relative"
+        className={`relative bg-white dark:bg-gray-900 rounded-2xl shadow-xl w-full ${sizeMap[size]} max-h-[85vh] flex flex-col animate-[fadeScaleIn_0.2s_ease-out]`}
         onClick={(e) => e.stopPropagation()}
       >
-        <button
-          onClick={onClose}
-          className="absolute top-3 right-3 text-gray-400 hover:text-gray-600"
-        >
-          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-          </svg>
-        </button>
-
-        <img
-          src={product.image}
-          alt={product.name}
-          className="w-full h-56 object-cover rounded-xl mb-4"
-        />
-
-        <h2 className="text-xl font-bold text-gray-900 mb-2">{product.name}</h2>
-        <p className="text-gray-600 text-sm mb-4">{product.description}</p>
-        <p className="text-lg font-semibold text-gray-900 mb-6">{product.price}</p>
-
-        <Button variant="primary" label={actionLabel} onClick={onAction} className="w-full" />
+        {showClose && (
+          <button
+            onClick={onClose}
+            className="absolute top-4 right-4 z-10 p-1.5 rounded-lg text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+            aria-label="Close modal"
+          >
+            <Icon name="x" size={18} />
+          </button>
+        )}
+        {title && (
+          <div className="flex-shrink-0 px-6 pt-6 pb-0">
+            <h2 className="text-lg font-bold text-gray-900 dark:text-white">{title}</h2>
+          </div>
+        )}
+        {children && (
+          <div className="flex-1 overflow-y-auto px-6 py-6">
+            {children}
+          </div>
+        )}
+        {footer && (
+          <div className="flex-shrink-0 px-6 pb-6 pt-0">
+            {footer}
+          </div>
+        )}
       </div>
     </div>
   )
