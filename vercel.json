@@ -1,5 +1,8 @@
 {
   "buildCommand": "node node_modules/vite/bin/vite.js build --config vite.docs.config.js",
   "outputDirectory": "dist-docs",
-  "framework": null
+  "framework": null,
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/docs.html" }
+  ]
 }
