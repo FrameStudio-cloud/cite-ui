@@ -3,16 +3,16 @@ import { Icon } from '../Icon'
 
 const Navbar = ({
   logo,
+  brand,
   links = [],
   ctaLabel,
   ctaHref,
   ctaVariant = 'primary',
   variant = 'default',
-  cartCount = 0,
-  onCartClick,
   whatsapp,
   className = '',
 }) => {
+  const resolvedLogo = logo || brand
   const [open, setOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
   const isGlass = variant === 'glass'
@@ -55,7 +55,7 @@ const Navbar = ({
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           <div className={`flex-shrink-0 text-xl font-bold tracking-tight transition-colors ${textColor}`}>
-            {typeof logo === 'string' ? logo : logo}
+            {typeof resolvedLogo === 'string' ? resolvedLogo : resolvedLogo}
           </div>
 
           <div className="hidden md:flex items-center gap-8">
@@ -63,17 +63,6 @@ const Navbar = ({
           </div>
 
           <div className="flex items-center gap-3">
-            {onCartClick && (
-              <button onClick={onCartClick} className={`relative p-2 transition-colors ${linkColor}`} aria-label="Cart">
-                <Icon name="cart" size={20} />
-                {cartCount > 0 && (
-                  <span className="absolute -top-0.5 -right-0.5 bg-red-500 text-white text-[10px] w-4.5 h-4.5 rounded-full flex items-center justify-center font-medium min-w-[18px] min-h-[18px] text-xs">
-                    {cartCount > 99 ? '99+' : cartCount}
-                  </span>
-                )}
-              </button>
-            )}
-
             {whatsapp && (
               <a
                 href={`https://wa.me/${whatsapp}`}

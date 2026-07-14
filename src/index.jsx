@@ -74,5 +74,11 @@ export { TrustBar } from './components/TrustBar'
 export { AnnouncementBar } from './components/AnnouncementBar'
 export { LocationMap } from './components/LocationMap'
 
+/* ─── New Storefront Components ─── */
+export { ImageWithFallback } from './components/ImageWithFallback'
+export { VariantPicker } from './components/VariantPicker'
+export { CategoryFilter } from './components/CategoryFilter'
+export { ProductDetail } from './components/ProductDetail'
+
 /* ─── Icon ─── */
 export { Icon } from './components/Icon'

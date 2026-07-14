@@ -1,4 +1,6 @@
+import { useState, useMemo } from 'react'
 import { CatalogueCard } from '../CatalogueCard'
+import { SearchBar } from '../SearchBar'
 import { Skeleton } from '../Skeleton'
 
 const colMap = {
@@ -29,9 +31,51 @@ const CatalogueGrid = ({
   description,
   loading = false,
   empty,
+  searchable = false,
+  searchPlaceholder = 'Search...',
+  onSearch,
+  searchValue,
+  onSearchChange,
+  categoryFilter,
+  selectedCategory,
+  onCategoryChange,
   className = '',
+  onItemClick,
 }) => {
   const colClass = colMap[columns] || colMap[3]
+
+  const [internalSearch, setInternalSearch] = useState('')
+  const [internalCategory, setInternalCategory] = useState('')
+
+  const search = onSearchChange !== undefined ? (searchValue || '') : internalSearch
+  const setSearch = onSearchChange || setInternalSearch
+  const category = onCategoryChange !== undefined ? (selectedCategory || '') : internalCategory
+  const setCategory = onCategoryChange || setInternalCategory
+
+  const categories = useMemo(() => {
+    if (categoryFilter) return categoryFilter
+    const cats = [...new Set(items.map((item) => item.category).filter(Boolean))]
+    return cats.length > 0 ? cats : null
+  }, [items, categoryFilter])
+
+  const filtered = useMemo(() => {
+    let result = items
+    if (search) {
+      const q = search.toLowerCase()
+      result = result.filter((item) => {
+        const name = (item.title || item.name || '').toLowerCase()
+        const desc = (item.description || '').toLowerCase()
+        const tag = (item.tag || item.category || '').toLowerCase()
+        return name.includes(q) || desc.includes(q) || tag.includes(q)
+      })
+    }
+    if (category) {
+      result = result.filter((item) => (item.category || item.tag) === category)
+    }
+    return result
+  }, [items, search, category])
+
+  const showSearch = searchable || categories
 
   if (loading) {
     return (
@@ -64,11 +108,64 @@ const CatalogueGrid = ({
     <section className={className}>
       {title && <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mb-2">{title}</h2>}
       {description && <p className="text-gray-500 dark:text-gray-400 mb-8 max-w-2xl">{description}</p>}
-      <div className={`grid ${colClass} gap-6`}>
-        {items.map((item, i) => (
-          <CatalogueCard key={i} {...item} variant={item.variant || variant} />
-        ))}
-      </div>
+
+      {showSearch && (
+        <div className="mb-6 flex flex-col sm:flex-row gap-3">
+          {searchable && (
+            <div className="flex-1">
+              <SearchBar
+                placeholder={searchPlaceholder}
+                value={search}
+                onChange={setSearch}
+              />
+            </div>
+          )}
+          {categories && (
+            <div className="flex flex-wrap gap-2">
+              <button
+                onClick={() => setCategory('')}
+                className={`text-sm px-3 py-1.5 rounded-lg border transition-colors ${
+                  !category
+                    ? 'bg-black text-white dark:bg-white dark:text-gray-900 border-black dark:border-white'
+                    : 'bg-white dark:bg-gray-900 text-gray-600 dark:text-gray-400 border-gray-200 dark:border-gray-700 hover:border-gray-400'
+                }`}
+              >
+                All
+              </button>
+              {categories.map((cat) => (
+                <button
+                  key={cat}
+                  onClick={() => setCategory(cat)}
+                  className={`text-sm px-3 py-1.5 rounded-lg border transition-colors ${
+                    category === cat
+                      ? 'bg-black text-white dark:bg-white dark:text-gray-900 border-black dark:border-white'
+                      : 'bg-white dark:bg-gray-900 text-gray-600 dark:text-gray-400 border-gray-200 dark:border-gray-700 hover:border-gray-400'
+                  }`}
+                >
+                  {cat}
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
+
+      {filtered.length === 0 ? (
+        <div className="text-center py-16 text-gray-500 dark:text-gray-400">
+          <p>No items match your search.</p>
+        </div>
+      ) : (
+        <div className={`grid ${colClass} gap-6`}>
+          {filtered.map((item, i) => (
+            <CatalogueCard
+              key={item.id || i}
+              {...item}
+              variant={item.variant || variant}
+              onClick={onItemClick ? () => onItemClick(item) : undefined}
+            />
+          ))}
+        </div>
+      )}
     </section>
   )
 }

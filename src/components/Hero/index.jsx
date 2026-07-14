@@ -3,6 +3,12 @@ import Button from '../Button'
 import { Container } from '../Container'
 import { Animate } from '../Animate'
 
+const normalizeImage = (img) => {
+  if (!img) return null
+  if (typeof img === 'string') return { src: img, alt: '' }
+  return img
+}
+
 const Hero = ({
   title,
   subtitle,
@@ -17,6 +23,8 @@ const Hero = ({
   const [current, setCurrent] = useState(0)
   const slideCount = slides?.length || 0
 
+  const safeImage = normalizeImage(image)
+
   const next = useCallback(() => {
     setCurrent((i) => (i + 1) % slideCount)
   }, [slideCount])
@@ -28,7 +36,7 @@ const Hero = ({
   }, [variant, slideCount, next])
 
   const textContent = (
-    <div className={`max-w-xl ${image ? (imagePosition === 'left' ? 'lg:order-2' : 'lg:order-1') : 'mx-auto text-center'}`}>
+    <div className={`max-w-xl ${safeImage ? (imagePosition === 'left' ? 'lg:order-2' : 'lg:order-1') : 'mx-auto text-center'}`}>
       <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-gray-900 dark:text-white leading-none mb-4">
         {title}
       </h1>
@@ -50,23 +58,29 @@ const Hero = ({
     </div>
   )
 
-  const imageContent = image && (
+  const imageContent = safeImage?.src ? (
     <div className={`${imagePosition === 'left' ? 'lg:order-1' : 'lg:order-2'} flex items-center justify-center`}>
-      <img src={image.src} alt={image.alt || ''} className="w-full max-w-lg rounded-2xl object-cover" style={{ maxHeight: 500 }} />
+      <img src={safeImage.src} alt={safeImage.alt || ''} className="w-full max-w-lg rounded-2xl object-cover" style={{ maxHeight: 500 }} />
     </div>
-  )
+  ) : null
 
   if (variant === 'slideshow' && slides?.length > 0) {
     const s = slides[current]
     return (
-      <section className={`relative h-screen min-h-[600px] overflow-hidden ${className}`}>
+      <section className={`relative min-h-[60vh] overflow-hidden ${className}`}>
         {slides.map((slide, i) => (
           <div
             key={i}
             className={`absolute inset-0 transition-opacity duration-1000 ${i === current ? 'opacity-100 z-10' : 'opacity-0 z-0'}`}
           >
-            <img src={slide.image} alt="" className="w-full h-full object-cover" />
-            <div className="absolute inset-0 bg-black/50" />
+            {slide.image ? (
+              <>
+                <img src={slide.image} alt="" className="w-full h-full object-cover" />
+                <div className="absolute inset-0 bg-black/50" />
+              </>
+            ) : (
+              <div className="w-full h-full bg-gradient-to-br from-gray-900 via-gray-800 to-gray-950" />
+            )}
           </div>
         ))}
         <div className="relative z-20 h-full flex items-center">

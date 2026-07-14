@@ -17,7 +17,7 @@ const BackToTop = ({
   const sizeClasses = {
     sm: 'w-9 h-9',
     md: 'w-11 h-11',
-    lg: 'w-13 h-13',
+    lg: 'w-12 h-12',
   }
 
   const iconSizes = { sm: 16, md: 18, lg: 22 }
