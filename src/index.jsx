@@ -2,7 +2,6 @@
 export { default as Navbar } from './components/Navbar'
 export { default as Button } from './components/Button'
 export { default as Gallery } from './components/Gallery'
-export { default as WhatsAppFloat } from './components/WhatsAppFloat'
 export { default as Modal } from './components/Modal'
 export { ToastProvider, useToast } from './components/Toast/ToastContext'
 
@@ -42,14 +41,9 @@ export { Tooltip } from './components/Tooltip'
 export { Table } from './components/Table'
 
 /* ─── Page Sections ─── */
-export { Hero } from './components/Hero'
-export { Features } from './components/Features'
-export { FAQ } from './components/FAQ'
-export { Pricing } from './components/Pricing'
-export { Footer } from './components/Footer'
-export { Stats } from './components/Stats'
-export { Testimonials } from './components/Testimonials'
-export { ContactSection } from './components/ContactSection'
+/* Removed in 2.0.0: Hero, Features, FAQ, Pricing, Footer, Stats, Testimonials,
+   ContactSection. They were marketing page furniture, not primitives, and had no
+   consumers in the FrameStudio apps. */
 
 /* ─── Hooks ─── */
 export { useForm } from './hooks/useForm'
@@ -65,20 +59,13 @@ export { formatKES, formatDate, slugify, truncate, generateId } from './utils/fo
 export { Animate } from './components/Animate'
 export { Motion } from './components/Motion'
 
-/* ─── Mini Catalogue ─── */
-export { CatalogueCard } from './components/CatalogueCard'
-export { CatalogueGrid } from './components/CatalogueGrid'
+/* ─── Search & scroll helpers ─── */
 export { SearchBar } from './components/SearchBar'
 export { BackToTop } from './components/BackToTop'
-export { TrustBar } from './components/TrustBar'
-export { AnnouncementBar } from './components/AnnouncementBar'
-export { LocationMap } from './components/LocationMap'
 
-/* ─── New Storefront Components ─── */
-export { ImageWithFallback } from './components/ImageWithFallback'
-export { VariantPicker } from './components/VariantPicker'
-export { CategoryFilter } from './components/CategoryFilter'
-export { ProductDetail } from './components/ProductDetail'
+/* Removed in 2.0.0: CatalogueCard, CatalogueGrid, TrustBar, AnnouncementBar,
+   LocationMap, ImageWithFallback, VariantPicker, CategoryFilter, ProductDetail,
+   WhatsAppFloat. The Keel storefront owns these now. */
 
 /* ─── Icon ─── */
 export { Icon } from './components/Icon'

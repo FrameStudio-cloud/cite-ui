@@ -21,7 +21,7 @@ const Card = ({
   href,
   hover = false,
 }) => {
-  const base = `rounded-xl transition-all duration-200 ${variantStyles[variant]} ${paddingStyles[padding]}`
+  const base = `rounded-xl transition-all duration-200 text-gray-900 dark:text-gray-100 ${variantStyles[variant]} ${paddingStyles[padding]}`
   const interactive = onClick || href ? 'cursor-pointer' : ''
   const hoverClass = hover ? 'hover:-translate-y-0.5' : ''
 

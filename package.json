@@ -1,6 +1,25 @@
 {
   "name": "cite-ui",
-  "version": "1.2.0",
+  "version": "2.0.1",
+  "description": "React component library for Tailwind CSS — 39 components, hooks and utilities, zero runtime dependencies.",
+  "license": "MIT",
+  "author": "Lewis Irungu",
+  "homepage": "https://cite-ui.framestudio.co.ke",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/FrameStudio-cloud/cite-ui.git"
+  },
+  "bugs": {
+    "url": "https://github.com/FrameStudio-cloud/cite-ui/issues"
+  },
+  "keywords": [
+    "react",
+    "components",
+    "component-library",
+    "tailwindcss",
+    "ui",
+    "kenya"
+  ],
   "type": "module",
   "main": "dist/cite-ui.umd.js",
   "module": "dist/cite-ui.es.js",
@@ -18,19 +37,21 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "docs:dev": "vite --open /docs.html",
-    "docs:build": "npx vite build --config vite.docs.config.js"
+    "docs:dev": "vite --config vite.docs.config.js --open /docs.html",
+    "docs:build": "npx vite build --config vite.docs.config.js",
+    "prepublishOnly": "npm run build"
   },
   "peerDependencies": {
     "react": "^18.0.0",
     "react-dom": "^18.0.0"
   },
   "devDependencies": {
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
     "@vitejs/plugin-react": "^4.3.4",
     "autoprefixer": "^10.4.20",
     "postcss": "^8.5.3",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^7.18.5",
     "tailwindcss": "^3.4.17",
     "vite": "^5.4.19"
   }

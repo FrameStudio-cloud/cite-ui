@@ -1,10 +1,10 @@
 import { Icon } from '../Icon'
 
 const variantStyles = {
-  primary: 'bg-black text-white shadow-sm hover:bg-gray-800 active:scale-[0.98] transition-all duration-150 rounded-lg',
-  secondary: 'bg-transparent border border-gray-300 text-gray-900 hover:bg-gray-100 active:scale-[0.98] transition-all duration-150 rounded-lg',
-  outline: 'bg-transparent border border-black text-black hover:bg-black hover:text-white active:scale-[0.98] transition-all duration-150 rounded-lg',
-  ghost: 'bg-transparent text-gray-600 hover:text-black hover:bg-gray-100 active:scale-[0.98] transition-all duration-150 rounded-lg',
+  primary: 'bg-black text-white shadow-sm hover:bg-gray-800 active:scale-[0.98] transition-all duration-150 rounded-lg dark:bg-white dark:text-gray-900 dark:hover:bg-gray-200',
+  secondary: 'bg-transparent border border-gray-300 text-gray-900 hover:bg-gray-100 active:scale-[0.98] transition-all duration-150 rounded-lg dark:border-gray-600 dark:text-gray-100 dark:hover:bg-gray-800',
+  outline: 'bg-transparent border border-black text-black hover:bg-black hover:text-white active:scale-[0.98] transition-all duration-150 rounded-lg dark:border-gray-100 dark:text-gray-100 dark:hover:bg-gray-100 dark:hover:text-gray-900',
+  ghost: 'bg-transparent text-gray-600 hover:text-black hover:bg-gray-100 active:scale-[0.98] transition-all duration-150 rounded-lg dark:text-gray-300 dark:hover:text-white dark:hover:bg-gray-800',
   danger: 'bg-red-600 text-white shadow-sm hover:bg-red-700 active:scale-[0.98] transition-all duration-150 rounded-lg',
   whatsapp: 'bg-[#25D366] text-white shadow-sm hover:bg-[#1ebe5d] active:scale-[0.98] transition-all duration-150 rounded-lg',
 }

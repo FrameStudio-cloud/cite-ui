@@ -1,31 +1,70 @@
-const PropTable = ({ props = [] }) => {
+export default function PropTable({ props = [], name = 'Component' }) {
   if (!props || props.length === 0) return null
+
+  const isRequired = (prop) => String(prop.default).includes('required')
+
   return (
-    <div className="overflow-x-auto rounded-xl border border-gray-200 dark:border-gray-800">
-      <table className="w-full text-sm">
-        <thead>
-          <tr className="bg-gray-50 dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800">
-            <th className="text-left px-4 py-2.5 font-semibold text-gray-800 dark:text-gray-200 text-xs uppercase tracking-wider">Prop</th>
-            <th className="text-left px-4 py-2.5 font-semibold text-gray-800 dark:text-gray-200 text-xs uppercase tracking-wider">Type</th>
-            <th className="text-left px-4 py-2.5 font-semibold text-gray-800 dark:text-gray-200 text-xs uppercase tracking-wider">Default</th>
-            <th className="text-left px-4 py-2.5 font-semibold text-gray-800 dark:text-gray-200 text-xs uppercase tracking-wider">Description</th>
-          </tr>
-        </thead>
-        <tbody className="divide-y divide-gray-100 dark:divide-gray-800/60">
-          {props.map((prop, i) => (
-            <tr key={i} className="even:bg-gray-50/50 dark:even:bg-gray-900/30">
-              <td className="px-4 py-2.5 font-mono text-xs font-semibold text-violet-700 dark:text-violet-400 whitespace-nowrap">{prop.name}</td>
-              <td className="px-4 py-2.5 font-mono text-xs text-gray-600 dark:text-gray-400 max-w-[260px]">
-                <code className="text-[11px] bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded leading-relaxed break-words inline-block">{prop.type}</code>
-              </td>
-              <td className="px-4 py-2.5 font-mono text-xs text-gray-500 dark:text-gray-500 whitespace-nowrap">{prop.default}</td>
-              <td className="px-4 py-2.5 text-xs text-gray-600 dark:text-gray-400">{prop.description}</td>
+    <div>
+      {/* Mobile: one card per prop, no horizontal scroll for prose columns. */}
+      <div className="space-y-2 sm:hidden">
+        {props.map((prop) => (
+          <div key={prop.name} className="rounded-xl border border-ink/10 p-3">
+            <div className="flex flex-wrap items-baseline justify-between gap-2">
+              <code className="font-mono text-[12px] font-bold text-ink">
+                {prop.name}
+                {isRequired(prop) && <span className="ml-1 text-accent">*</span>}
+              </code>
+              <code className="font-mono text-[10px] text-ink/45">{prop.default}</code>
+            </div>
+            <p className="mt-1.5 text-[12px] leading-relaxed text-ink-soft">{prop.description}</p>
+            <code className="mt-2 inline-block rounded bg-ink/5 px-1.5 py-0.5 font-mono text-[10px] text-ink-soft">
+              {prop.type}
+            </code>
+          </div>
+        ))}
+      </div>
+
+      <div className="hidden overflow-x-auto rounded-2xl border border-ink/10 sm:block">
+        <table className="w-full min-w-[560px] border-collapse text-left">
+          <caption className="sr-only">{name} props</caption>
+          <thead>
+            <tr className="border-b border-ink/10 bg-cream/60">
+              {['Prop', 'Type', 'Default', 'Description'].map((heading) => (
+                <th
+                  key={heading}
+                  scope="col"
+                  className="px-4 py-2.5 font-mono text-[9px] uppercase tracking-[0.18em] text-ink/40"
+                >
+                  {heading}
+                </th>
+              ))}
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {props.map((prop) => (
+              <tr key={prop.name} className="border-b border-ink/5 last:border-0">
+                <td className="whitespace-nowrap px-4 py-3 align-top">
+                  <span className="font-mono text-[12px] font-bold text-ink">
+                    {prop.name}
+                    {isRequired(prop) && <span className="ml-1 text-accent">*</span>}
+                  </span>
+                </td>
+                <td className="px-4 py-3 align-top">
+                  <code className="inline-block rounded-md bg-ink/5 px-1.5 py-0.5 font-mono text-[11px] leading-relaxed text-ink-soft">
+                    {prop.type}
+                  </code>
+                </td>
+                <td className="whitespace-nowrap px-4 py-3 align-top font-mono text-[11px] text-ink/50">
+                  {prop.default}
+                </td>
+                <td className="px-4 py-3 align-top text-[12px] leading-relaxed text-ink-soft">
+                  {prop.description}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   )
 }
-
-export default PropTable

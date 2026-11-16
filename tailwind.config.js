@@ -1,9 +1,29 @@
 /** @type {import('tailwindcss').Config} */
 export default {
   darkMode: 'class',
-  content: ['./src/**/*.{js,jsx,ts,tsx}'],
+  content: ['./docs.html', './src/**/*.{js,jsx,ts,tsx}'],
   theme: {
     extend: {
+      colors: {
+        ink: {
+          DEFAULT: '#0B0B0B',
+          2: '#171716',
+          soft: '#52524B',
+          faint: '#8A8A80',
+        },
+        paper: '#FBF8F0',
+        cream: '#F3EDDF',
+        accent: {
+          DEFAULT: '#FF5A36',
+          deep: '#E8461F',
+        },
+      },
+      fontFamily: {
+        sans: ['General Sans', 'system-ui', '-apple-system', 'sans-serif'],
+        display: ['Bricolage Grotesque', 'General Sans', 'system-ui', 'sans-serif'],
+        serif: ['Instrument Serif', 'Georgia', 'serif'],
+        mono: ['Space Mono', 'ui-monospace', 'SFMono-Regular', 'monospace'],
+      },
       keyframes: {
         slideIn: {
           from: { opacity: '0', transform: 'translateX(1rem)' },
