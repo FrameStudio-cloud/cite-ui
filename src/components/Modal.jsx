@@ -1,5 +1,8 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useId, useRef } from 'react'
+import { createPortal } from 'react-dom'
 import { Icon } from './Icon'
+import { useFocusTrap } from '../hooks/useFocusTrap'
+import { isTopDialog, lockScroll, unlockScroll } from '../utils/overlay'
 
 const sizeMap = {
   sm: 'max-w-sm',
@@ -22,29 +25,39 @@ const Modal = ({
   showClose = true,
 }) => {
   const overlayRef = useRef(null)
+  const panelRef = useFocusTrap(isOpen)
+  const titleId = useId()
 
   useEffect(() => {
-    if (!isOpen) return
-    const handler = (e) => { if (e.key === 'Escape') onClose() }
+    if (!isOpen) return undefined
+    const handler = (e) => {
+      if (e.key === 'Escape' && isTopDialog(panelRef.current)) onClose()
+    }
     document.addEventListener('keydown', handler)
-    document.body.style.overflow = 'hidden'
+    lockScroll()
     return () => {
       document.removeEventListener('keydown', handler)
-      document.body.style.overflow = ''
+      unlockScroll()
     }
-  }, [isOpen, onClose])
+  }, [isOpen, onClose, panelRef])
 
-  if (!isOpen) return null
+  if (!isOpen || typeof document === 'undefined') return null
 
-  return (
+  return createPortal(
     <div
       ref={overlayRef}
-      className="fixed inset-0 z-50 flex items-center justify-center p-4"
+      className="fixed inset-0 z-[60] flex items-center justify-center p-4"
       onClick={(e) => { if (closeOnOverlay && e.target === overlayRef.current) onClose() }}
     >
       <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" />
       <div
-        className={`relative bg-white dark:bg-gray-900 rounded-2xl shadow-xl w-full ${sizeMap[size]} max-h-[85vh] flex flex-col animate-[fadeScaleIn_0.2s_ease-out]`}
+        ref={panelRef}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby={title ? titleId : undefined}
+        aria-label={title ? undefined : 'Dialog'}
+        tabIndex={-1}
+        className={`relative bg-white dark:bg-gray-900 rounded-2xl shadow-xl w-full ${sizeMap[size]} max-h-[85vh] flex flex-col animate-[fadeScaleIn_0.2s_ease-out] outline-none`}
         onClick={(e) => e.stopPropagation()}
       >
         {showClose && (
@@ -58,7 +71,7 @@ const Modal = ({
         )}
         {title && (
           <div className="flex-shrink-0 px-6 pt-6 pb-0">
-            <h2 className="text-lg font-bold text-gray-900 dark:text-white">{title}</h2>
+            <h2 id={titleId} className="text-lg font-bold text-gray-900 dark:text-white">{title}</h2>
           </div>
         )}
         {children && (
@@ -72,7 +85,8 @@ const Modal = ({
           </div>
         )}
       </div>
-    </div>
+    </div>,
+    document.body
   )
 }
 

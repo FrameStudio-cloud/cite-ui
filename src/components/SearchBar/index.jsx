@@ -7,12 +7,20 @@ const SearchBar = ({
   onChange,
   onSubmit,
   filters,
+  activeFilter: controlledFilter,
+  onFilterChange,
   loading = false,
   className = '',
 }) => {
   const [open, setOpen] = useState(false)
-  const [activeFilter, setActiveFilter] = useState(null)
+  const [internalFilter, setInternalFilter] = useState(null)
   const ref = useRef(null)
+
+  const activeFilter = controlledFilter !== undefined ? controlledFilter : internalFilter
+  const setFilter = (next) => {
+    if (onFilterChange) onFilterChange(next)
+    else setInternalFilter(next)
+  }
 
   useEffect(() => {
     const handler = (e) => {
@@ -35,7 +43,7 @@ const SearchBar = ({
           <input
             type="text"
             value={value}
-            onChange={(e) => onChange(e.target.value)}
+            onChange={(e) => onChange?.(e.target.value)}
             placeholder={placeholder}
             className="w-full pl-9 pr-3 py-2.5 text-sm bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-black/10 dark:focus:ring-white/10 focus:border-gray-400 dark:focus:border-gray-500 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 transition-colors"
           />
@@ -50,14 +58,19 @@ const SearchBar = ({
             <button
               type="button"
               onClick={() => setOpen(!open)}
+              aria-expanded={open}
+              aria-haspopup="menu"
               className="flex items-center gap-1.5 px-3 py-2.5 text-sm bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 transition-colors whitespace-nowrap"
             >
               <Icon name="filter" size={14} />
               <span className="hidden sm:inline">Filters</span>
+              {activeFilter != null && (
+                <span className="h-1.5 w-1.5 rounded-full bg-black dark:bg-white" aria-hidden="true" />
+              )}
               <Icon name="chevronDown" size={12} />
             </button>
             {open && (
-              <div className="absolute right-0 top-full mt-1 w-56 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl shadow-lg z-40 p-3 space-y-3">
+              <div role="menu" className="absolute right-0 top-full mt-1 w-56 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl shadow-lg z-40 p-3 space-y-3">
                 {filters.map((filter, i) => (
                   <div key={i}>
                     <p className="text-[11px] font-semibold tracking-wide uppercase text-gray-500 mb-1.5">{filter.label}</p>
@@ -66,8 +79,11 @@ const SearchBar = ({
                         <button
                           key={j}
                           type="button"
+                          role="menuitemradio"
+                          aria-checked={opt.value === activeFilter}
                           onClick={() => {
-                            setActiveFilter(opt.value === activeFilter ? null : opt.value)
+                            const next = opt.value === activeFilter ? null : opt.value
+                            setFilter(next)
                             setOpen(false)
                           }}
                           className={`block w-full text-left text-sm px-2.5 py-1.5 rounded-lg transition-colors ${opt.value === activeFilter ? 'bg-black text-white dark:bg-white dark:text-gray-900' : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800'}`}

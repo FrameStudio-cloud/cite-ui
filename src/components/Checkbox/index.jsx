@@ -12,7 +12,7 @@ const Checkbox = ({
   ...props
 }) => {
   return (
-    <label className={`inline-flex items-start gap-3 cursor-pointer ${disabled ? 'opacity-60 cursor-not-allowed' : ''} ${className}`}>
+    <label className={`flex w-fit items-start gap-3 cursor-pointer ${disabled ? 'opacity-60 cursor-not-allowed' : ''} ${className}`}>
       <div className="relative flex-shrink-0 mt-0.5">
         <input
           type="checkbox"

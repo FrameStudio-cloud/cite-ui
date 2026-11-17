@@ -38,7 +38,7 @@ const Button = ({
   className = '',
   children,
 }) => {
-  const classes = `inline-flex items-center justify-center font-medium ${variantStyles[variant] || variantStyles.primary} ${sizeStyles[size] || sizeStyles.md} ${disabled || loading ? 'opacity-50 cursor-not-allowed pointer-events-none' : 'cursor-pointer'} ${className}`
+  const classes = `inline-flex items-center justify-center whitespace-nowrap font-medium ${variantStyles[variant] || variantStyles.primary} ${sizeStyles[size] || sizeStyles.md} ${disabled || loading ? 'opacity-50 cursor-not-allowed pointer-events-none' : 'cursor-pointer'} ${className}`
 
   const content = (
     <>

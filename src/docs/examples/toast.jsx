@@ -28,6 +28,21 @@ function PromiseDemo() {
   )
 }
 
+function ActionDemo() {
+  const { toast } = useToast()
+  return (
+    <Button
+      variant="outline"
+      label="Delete draft"
+      onClick={() =>
+        toast.success('Draft deleted', {
+          action: { label: 'Undo', onClick: () => toast.info('Draft restored') },
+        })
+      }
+    />
+  )
+}
+
 export const examples = [
   {
     id: 'types',
@@ -57,6 +72,19 @@ toast.error('Payment could not be verified')`,
     Demo: () => (
       <ToastProvider position="top-right">
         <PromiseDemo />
+      </ToastProvider>
+    ),
+  },
+  {
+    id: 'action',
+    title: 'Action button',
+    description: 'An undo action dismisses the toast after running. Timers pause while the pointer is over the stack.',
+    code: `toast.success('Draft deleted', {
+  action: { label: 'Undo', onClick: restoreDraft },
+})`,
+    Demo: () => (
+      <ToastProvider position="top-right">
+        <ActionDemo />
       </ToastProvider>
     ),
   },

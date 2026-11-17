@@ -17,7 +17,7 @@ const Switch = ({
   const s = sizes[size] || sizes.md
 
   return (
-    <label className={`inline-flex items-center gap-3 cursor-pointer ${disabled ? 'opacity-60 cursor-not-allowed' : ''} ${className}`}>
+    <label className={`flex w-fit items-center gap-3 cursor-pointer ${disabled ? 'opacity-60 cursor-not-allowed' : ''} ${className}`}>
       <div className="relative">
         <input
           type="checkbox"

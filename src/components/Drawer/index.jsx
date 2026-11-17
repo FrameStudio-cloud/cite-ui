@@ -1,5 +1,8 @@
-import { useEffect } from 'react'
+import { useEffect, useId } from 'react'
+import { createPortal } from 'react-dom'
 import { Icon } from '../Icon'
+import { useFocusTrap } from '../../hooks/useFocusTrap'
+import { isTopDialog, lockScroll, unlockScroll } from '../../utils/overlay'
 
 const sideMap = {
   left: 'left-0',
@@ -28,16 +31,21 @@ const Drawer = ({
   footer,
   className = '',
 }) => {
+  const panelRef = useFocusTrap(isOpen)
+  const titleId = useId()
+
   useEffect(() => {
-    if (!isOpen) return
-    const handler = (e) => { if (e.key === 'Escape') onClose() }
+    if (!isOpen) return undefined
+    const handler = (e) => {
+      if (e.key === 'Escape' && isTopDialog(panelRef.current)) onClose()
+    }
     document.addEventListener('keydown', handler)
-    document.body.style.overflow = 'hidden'
+    lockScroll()
     return () => {
       document.removeEventListener('keydown', handler)
-      document.body.style.overflow = ''
+      unlockScroll()
     }
-  }, [isOpen, onClose])
+  }, [isOpen, onClose, panelRef])
 
   const isHorizontal = side === 'left' || side === 'right'
   const slideClass = isOpen
@@ -47,16 +55,26 @@ const Drawer = ({
     : side === 'top' ? '-translate-y-full'
     : 'translate-y-full'
 
-  return (
+  if (typeof document === 'undefined') return null
+
+  return createPortal(
     <>
       {isOpen && (
-        <div className="fixed inset-0 z-40 bg-black/40" onClick={() => { if (closeOnOverlay) onClose() }} />
+        <div className="fixed inset-0 z-[60] bg-black/40" onClick={() => { if (closeOnOverlay) onClose() }} />
       )}
       <div
-        className={`fixed z-50 bg-white dark:bg-gray-900 shadow-xl transition-transform duration-300 ease-in-out ${isHorizontal ? `${sideMap[side]} top-0 h-full ${sizeMap[size] || sizeMap.md} max-w-[90vw]` : `${sideMap[side]} ${sizeMap.full} h-80 max-h-[70vh]`} ${slideClass} ${className}`}
+        ref={panelRef}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby={title ? titleId : undefined}
+        aria-label={title ? undefined : 'Drawer'}
+        aria-hidden={!isOpen}
+        inert={!isOpen ? '' : undefined}
+        tabIndex={-1}
+        className={`fixed z-[61] bg-white dark:bg-gray-900 shadow-xl transition-transform duration-300 ease-in-out outline-none ${isHorizontal ? `${sideMap[side]} top-0 h-full ${sizeMap[size] || sizeMap.md} max-w-[90vw]` : `${sideMap[side]} ${sizeMap.full} h-80 max-h-[70vh]`} ${slideClass} ${isOpen ? '' : 'pointer-events-none'} ${className}`}
       >
         <div className="flex items-center justify-between px-5 py-4 border-b border-gray-200 dark:border-gray-700">
-          <h2 className="text-base font-bold text-gray-900 dark:text-white">{title}</h2>
+          <h2 id={titleId} className="text-base font-bold text-gray-900 dark:text-white">{title}</h2>
           {showClose && (
             <button onClick={onClose} className="p-1.5 rounded-lg text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors" aria-label="Close drawer">
               <Icon name="x" size={18} />
@@ -72,7 +90,8 @@ const Drawer = ({
           </div>
         )}
       </div>
-    </>
+    </>,
+    document.body
   )
 }
 

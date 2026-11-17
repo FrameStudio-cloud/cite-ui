@@ -4,8 +4,10 @@ const RULES = {
   required: (v) => (v ? '' : 'This field is required'),
   email: (v) =>
     /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v) ? '' : 'Invalid email address',
-  phone: (v) =>
-    /^(\+?254|0)?[17]\d{8}$/.test(v) ? '' : 'Invalid phone number',
+  phone: (v) => {
+    const digits = String(v ?? '').replace(/[\s()-]/g, '')
+    return /^(\+?254|0)?[17]\d{8}$/.test(digits) ? '' : 'Invalid phone number'
+  },
   min: (min) => (v) =>
     v && v.length >= min ? '' : `Must be at least ${min} characters`,
   max: (max) => (v) =>

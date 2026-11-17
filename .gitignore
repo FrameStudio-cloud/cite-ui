@@ -8,6 +8,9 @@ dist-docs/
 # playwright artifacts
 .playwright-mcp/
 
+# package tarballs from local testing
+*.tgz
+
 # local env
 .env
 .env.*

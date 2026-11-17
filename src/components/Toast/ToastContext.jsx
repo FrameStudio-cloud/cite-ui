@@ -41,32 +41,56 @@ export const useToast = () => {
   return ctx
 }
 
-export const ToastProvider = ({ children, position = 'top-right' }) => {
+export const ToastProvider = ({
+  children,
+  position = 'top-right',
+  offset = 20,
+  pauseOnHover = true,
+}) => {
   const [toasts, setToasts] = useState([])
   const timersRef = useRef({})
   const isTop = position.startsWith('top')
 
   const dismiss = useCallback((id) => {
     setToasts((prev) => prev.filter((t) => t.id !== id))
-    if (timersRef.current[id]) {
-      clearTimeout(timersRef.current[id])
+    const entry = timersRef.current[id]
+    if (entry) {
+      clearTimeout(entry.timer)
       delete timersRef.current[id]
     }
   }, [])
 
+  const startTimer = useCallback((id, duration) => {
+    if (duration === Infinity) return
+    const entry = timersRef.current[id]
+    if (entry) clearTimeout(entry.timer)
+    timersRef.current[id] = {
+      duration,
+      timer: setTimeout(() => dismiss(id), duration),
+    }
+  }, [dismiss])
+
+  const pause = useCallback((id) => {
+    const entry = timersRef.current[id]
+    if (!entry) return
+    clearTimeout(entry.timer)
+    entry.timer = null
+  }, [])
+
+  const resume = useCallback((id) => {
+    const entry = timersRef.current[id]
+    if (!entry || entry.timer) return
+    entry.timer = setTimeout(() => dismiss(id), entry.duration)
+  }, [dismiss])
+
   const addToast = useCallback((type, message, options = {}) => {
     const id = ++toastId
     const duration = options.duration ?? DEFAULT_DURATIONS[type]
-    setToasts((prev) =>
-      isTop
-        ? [...prev, { id, type, message }]
-        : [{ id, type, message }, ...prev]
-    )
-    if (duration !== Infinity) {
-      timersRef.current[id] = setTimeout(() => dismiss(id), duration)
-    }
+    const item = { id, type, message, duration, action: options.action }
+    setToasts((prev) => (isTop ? [...prev, item] : [item, ...prev]))
+    startTimer(id, duration)
     return id
-  }, [dismiss, isTop])
+  }, [isTop, startTimer])
 
   const toast = {
     success: (message, options) => addToast('success', message, options),
@@ -90,15 +114,42 @@ export const ToastProvider = ({ children, position = 'top-right' }) => {
   return (
     <ToastContext.Provider value={{ toast, dismiss }}>
       {children}
-      <div className={`fixed z-[9999] flex flex-col gap-2 max-w-sm ${POSITION_CLASSES[position]}`}>
+      <div
+        role="region"
+        aria-live="polite"
+        aria-label="Notifications"
+        style={{ [isTop ? 'top' : 'bottom']: offset }}
+        className={`fixed z-[70] flex w-[calc(100%-2rem)] max-w-sm flex-col gap-2 sm:w-auto ${POSITION_CLASSES[position]}`}
+      >
         {toasts.map((t) => (
           <div
             key={t.id}
-            className={`flex items-start gap-3 bg-white dark:bg-gray-900 rounded-xl shadow-lg border border-gray-100 dark:border-gray-800 border-l-4 ${BORDER_CLASSES[t.type]} p-4 animate-[slideIn_0.25s_ease-out]`}
+            onMouseEnter={() => pauseOnHover && pause(t.id)}
+            onMouseLeave={() => pauseOnHover && resume(t.id)}
+            className={`flex w-full items-start gap-3 bg-white dark:bg-gray-900 rounded-xl shadow-lg border border-gray-100 dark:border-gray-800 border-l-4 ${BORDER_CLASSES[t.type]} p-4 animate-[slideIn_0.25s_ease-out]`}
           >
             <span className="flex-shrink-0 mt-0.5">{ICONS[t.type]}</span>
-            <p className="flex-1 text-sm text-gray-800 dark:text-gray-200">{t.message}</p>
-            <button onClick={() => dismiss(t.id)} className="flex-shrink-0 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors">
+            <div className="flex-1">
+              <p className="text-sm text-gray-800 dark:text-gray-200">{t.message}</p>
+              {t.action && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    t.action.onClick?.()
+                    dismiss(t.id)
+                  }}
+                  className="mt-1.5 text-xs font-semibold text-gray-900 dark:text-white underline underline-offset-2 hover:no-underline"
+                >
+                  {t.action.label}
+                </button>
+              )}
+            </div>
+            <button
+              type="button"
+              onClick={() => dismiss(t.id)}
+              aria-label="Dismiss notification"
+              className="flex-shrink-0 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
+            >
               <Icon name="x" size={14} />
             </button>
           </div>

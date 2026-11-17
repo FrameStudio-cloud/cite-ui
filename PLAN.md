@@ -349,14 +349,12 @@ Rules:
 - [x] Add `license`, `homepage`, `repository`, `bugs`, `keywords` and a real
       `description` to `package.json`
 - [x] Docs header/footer read `pkg.version`; docs count `54+` → `57`
-- [x] **Prune 18 components** (see above); version is now **2.0.0**
-- [ ] Publish `2.0.0` after the readme and docs no longer mention removed
-      components (`npm login` first — this machine is `E401`)
+- [x] **Prune 18 components** (see above); released as **2.0.0**, fixes in **2.0.2**
+- [x] Publish `2.0.0` / `2.0.1` (metadata) / `2.0.2` (dialog, dark, phone, toast, table fixes)
 - [ ] Vercel: redirect `cite-ui.vercel.app` → `cite-ui.framestudio.co.ke`
 - [ ] GitHub: set repo homepage + topics in Settings
-- [ ] After the prune, update the count in readme, docs and the landing page
-      (landing currently advertises 57 components / 26 kB for npm `1.2.0`; change
-      it when `2.0.0` ships: 39 components / 18 kB)
+- [x] Update the count in readme, docs and the landing page
+      (39 components, 21 kB gzip, v2.0.2)
 
 ### Phase 1 — Shell (1–2 days)
 

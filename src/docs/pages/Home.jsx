@@ -36,7 +36,7 @@ export default function Home() {
         {[
           { value: componentCount, label: 'components' },
           { value: '0', label: 'runtime deps' },
-          { value: '18 kB', label: 'gzip, ESM' },
+          { value: '21 kB', label: 'gzip, ESM' },
           { value: 'MIT', label: 'license' },
         ].map((stat) => (
           <div key={stat.label}>
