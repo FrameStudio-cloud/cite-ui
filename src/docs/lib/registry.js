@@ -30,12 +30,21 @@ export const GUIDES = [
   { id: 'guide-motion', name: 'Motion', path: '/guide/motion' },
 ]
 
+const GROUP_LABELS = {
+  'Legacy / Enhanced': 'Base components',
+  Form: 'Forms',
+}
+
+export function groupLabel(name) {
+  return GROUP_LABELS[name] || name
+}
+
 export const navGroups = [
   { name: 'Getting started', items: GUIDES },
   ...groups
     .filter((group) => group.name !== 'Getting Started')
     .map((group) => ({
-      name: group.name,
+      name: groupLabel(group.name),
       items: group.items.map((item) => ({ ...item, path: pathFor(item) })),
     })),
 ]

@@ -6,19 +6,21 @@ const Pagination = ({ current, total, onChange, siblingCount = 1, size = 'md', c
   const getPages = () => {
     const totalPages = Math.max(total, 1)
     const sibling = Math.max(siblingCount, 0)
-    const firstPage = 1
-    const lastPage = totalPages
 
-    const leftSibling = Math.max(current - sibling, 1)
-    const rightSibling = Math.min(current + sibling, totalPages)
+    // Short ranges need no ellipsis at all; this also prevents the last page
+    // being emitted twice when the window reaches it.
+    if (totalPages <= 5 + sibling * 2) return range(1, totalPages)
 
-    const showLeftDots = leftSibling > 2
-    const showRightDots = rightSibling < totalPages - 1
+    const leftSibling = Math.max(current - sibling, 2)
+    const rightSibling = Math.min(current + sibling, totalPages - 1)
+    const pages = [1]
 
-    if (!showLeftDots && !showRightDots) return range(1, totalPages)
-    if (!showLeftDots && showRightDots) return [...range(1, 3 + sibling * 2), '...', totalPages]
-    if (showLeftDots && !showRightDots) return [1, '...', ...range(totalPages - 3 - sibling * 2 + 1, totalPages)]
-    return [1, '...', ...range(leftSibling, rightSibling), '...', totalPages]
+    if (leftSibling > 2) pages.push('...')
+    pages.push(...range(leftSibling, rightSibling))
+    if (rightSibling < totalPages - 1) pages.push('...')
+    pages.push(totalPages)
+
+    return pages
   }
 
   const sizeStyles = {

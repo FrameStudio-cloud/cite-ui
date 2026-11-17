@@ -6,7 +6,7 @@ import PropTable from '../PropTable'
 import { Icon } from '../../index'
 import { examplesById } from '../examples'
 import { usePageMeta } from '../lib/meta'
-import { byId, importStatement, neighbors, pathFor, sourceFor } from '../lib/registry'
+import { byId, groupLabel, importStatement, neighbors, pathFor, sourceFor } from '../lib/registry'
 
 function plainText(html) {
   return html.replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim()
@@ -51,7 +51,7 @@ export default function ComponentPage() {
           <nav aria-label="Breadcrumb" className="font-mono text-[10px] uppercase tracking-[0.16em] text-ink/35">
             <Link to="/" className="transition-colors hover:text-ink">Docs</Link>
             <span className="mx-2">/</span>
-            <span>{entry.group}</span>
+            <span>{groupLabel(entry.group)}</span>
           </nav>
           {source && (
             <a
