@@ -3,6 +3,10 @@
 The visual system the docs share with `framestudio.co.ke` (and any other
 FrameStudio project). If a tool looks like this, it reads as ours.
 
+Component API conventions — class slots, `currentColor` state, the optional
+`--cite-accent` variable — live in `THEMING.md`. This file is the palette; that
+one is the contract.
+
 Source of truth:
 
 - `tailwind.config.js` — colours and font families

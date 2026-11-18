@@ -44,7 +44,7 @@ const SECTION_COPY = {
   },
   Icons: {
     title: 'Icons',
-    desc: 'One Icon component, 45 stroke glyphs, no icon package.',
+    desc: 'One Icon component, 49 stroke glyphs, no icon package.',
   },
 }
 
@@ -58,7 +58,7 @@ function meta(entry) {
 export default function Home() {
   usePageMeta(
     'React components for Tailwind CSS',
-    'Documentation for cite-ui: 39 React components for Tailwind CSS, zero runtime dependencies, MIT licensed.'
+    'Documentation for cite-ui: 40 React components for Tailwind CSS, zero runtime dependencies, MIT licensed.'
   )
 
   const sections = groups.filter((group) => group.name !== 'Getting Started')
@@ -120,7 +120,7 @@ export default function Home() {
             {[
               { value: componentCount, label: 'components' },
               { value: '0', label: 'runtime deps' },
-              { value: '21 kB', label: 'gzip, ESM' },
+              { value: '22.5 kB', label: 'gzip, ESM' },
               { value: 'MIT', label: 'license' },
             ].map((stat) => (
               <div key={stat.label}>

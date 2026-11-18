@@ -8,6 +8,7 @@ import { examples as modal } from './modal'
 import { examples as card } from './card'
 import { examples as badge } from './badge'
 import { examples as select } from './select'
+import { examples as bottomNav } from './bottom-nav'
 
 /** Components migrated to the specimen system in Phase 2. */
 export const examplesById = {
@@ -21,4 +22,5 @@ export const examplesById = {
   card,
   badge,
   select,
+  'bottom-nav': bottomNav,
 }

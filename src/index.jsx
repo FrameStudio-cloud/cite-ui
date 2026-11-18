@@ -39,6 +39,7 @@ export { Breadcrumbs } from './components/Breadcrumbs'
 export { Pagination } from './components/Pagination'
 export { Tooltip } from './components/Tooltip'
 export { Table } from './components/Table'
+export { BottomNav } from './components/BottomNav'
 
 /* ─── Page Sections ─── */
 /* Removed in 2.0.0: Hero, Features, FAQ, Pricing, Footer, Stats, Testimonials,

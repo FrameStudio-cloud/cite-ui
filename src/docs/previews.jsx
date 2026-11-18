@@ -278,6 +278,23 @@ const previews = {
       <span className="text-[7px] text-gray-400">after 300px</span>
     </div>
   ),
+  'bottom-nav': () => (
+    <div className="flex w-full max-w-[160px] items-center justify-between gap-2">
+      <div className="flex items-center gap-1 rounded-full bg-gray-900 p-1 text-white">
+        <span className="flex h-7 w-7 items-center justify-center rounded-full bg-white/15">
+          <Icon name="home" size={13} strokeWidth={2} />
+        </span>
+        {['search', 'compass', 'user'].map((name) => (
+          <span key={name} className="flex h-7 w-7 items-center justify-center opacity-60">
+            <Icon name={name} size={13} strokeWidth={1.7} />
+          </span>
+        ))}
+      </div>
+      <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-amber-400 text-gray-900">
+        <Icon name="layers" size={14} strokeWidth={2} />
+      </span>
+    </div>
+  ),
   animate: () => (
     <div className="relative flex h-16 w-full max-w-[150px] items-center justify-center">
       <span className="absolute left-2 top-2 text-[10px] text-gray-300">↘</span>

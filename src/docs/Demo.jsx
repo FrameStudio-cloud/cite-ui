@@ -18,6 +18,7 @@ const ICONS = [
   'arrowDown', 'upload', 'download', 'image', 'externalLink', 'globe', 'clock',
   'trash', 'plus', 'minus', 'settings', 'edit', 'share', 'sun', 'moon', 'eye',
   'eyeOff', 'copy', 'link', 'refreshCw', 'filter', 'slash', 'messageCircle', 'package',
+  'home', 'bell', 'compass', 'layers',
 ]
 
 function IconGrid() {

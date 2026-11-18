@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { Button } from '../../index'
+import { Button, Progress, Switch } from '../../index'
 import Specimen from '../Specimen'
 import CodePanel from '../CodePanel'
 import { usePageMeta } from '../lib/meta'
@@ -13,6 +13,28 @@ function OverrideDemo() {
         className="!bg-[#FF5A36] !text-[#0B0B0B] hover:!bg-[#E8461F]"
       />
       <Button variant="outline" label="Rounded full" className="!rounded-full" />
+    </div>
+  )
+}
+
+function SlotsDemo() {
+  return (
+    <div className="w-full max-w-md space-y-6">
+      <Progress
+        value={68}
+        showLabel
+        classNames={{
+          track: 'bg-ink/10',
+          bar: 'bg-gradient-to-r from-[#FF5A36] to-[#F5A94A]',
+          label: 'text-ink',
+        }}
+      />
+      <Switch
+        checked
+        label="Notifications"
+        onChange={() => {}}
+        classNames={{ track: '!bg-[#7C3AED]' }}
+      />
     </div>
   )
 }
@@ -36,8 +58,10 @@ export default function ThemingGuide() {
           Theming
         </h1>
         <p className="mt-4 max-w-2xl text-[15px] leading-relaxed text-ink-soft">
-          The components ship neutral Tailwind defaults. There are no CSS variables to learn and no
-          stylesheet to import — your Tailwind config and the classes you pass are the theme.
+          The components ship neutral Tailwind defaults. There is no theme provider and no
+          stylesheet to import — your Tailwind config and the classes you pass are the theme. One
+          optional CSS variable, <code className="rounded bg-ink/5 px-1.5 py-0.5 font-mono text-[12px] text-ink">--cite-accent</code>,
+          re-skins the accent surfaces.
         </p>
       </header>
 
@@ -100,6 +124,80 @@ export default function ThemingGuide() {
       </section>
 
       <section className="mt-10">
+        <h2 className="font-mono text-[10px] uppercase tracking-[0.2em] text-ink/35">One accent variable</h2>
+        <p className="mt-3 max-w-2xl text-[15px] leading-relaxed text-ink-soft">
+          Components with a brand accent — like BottomNav&rsquo;s action tile, badge and focus ring —
+          read <code className="rounded bg-ink/5 px-1.5 py-0.5 font-mono text-[12px] text-ink">--cite-accent</code>{' '}
+          with the FrameStudio vermilion as a fallback. Leave it unset and nothing changes; set it
+          once and every accent surface follows.
+        </p>
+        <div className="mt-3">
+          <CodePanel
+            filename="styles.css"
+            code={`:root {\n  --cite-accent: #7c3aed;\n}`}
+          />
+        </div>
+        <p className="mt-4 text-[13px] leading-relaxed text-ink/50">
+          There are no per-component variables. A surface that needs its own colour takes a class
+          slot instead.
+        </p>
+      </section>
+
+      <section className="mt-10">
+        <h2 className="font-mono text-[10px] uppercase tracking-[0.2em] text-ink/35">Slots for brand surfaces</h2>
+        <p className="mt-3 max-w-2xl text-[15px] leading-relaxed text-ink-soft">
+          BottomNav, Tabs, Switch, Progress and Alert accept a{' '}
+          <code className="rounded bg-ink/5 px-1.5 py-0.5 font-mono text-[12px] text-ink">classNames</code>{' '}
+          object. Slots are appended after the defaults, so a gradient, an image or a brand colour
+          can be passed without a new prop:
+        </p>
+        <div className="mt-3">
+          <CodePanel
+            filename="BrandNav.jsx"
+            code={`<BottomNav\n  items={items}\n  action={{ icon: "plus", label: "New" }}\n  classNames={{\n    bar: "bg-gradient-to-br from-gray-900 to-purple-950",\n    activeItem: "bg-white/20",\n    action: "bg-gradient-to-br from-amber-300 to-orange-500",\n  }}\n/>`}
+          />
+        </div>
+        <div className="mt-4">
+          <Specimen
+            id="slots"
+            title="The same slots on a progress bar and a switch"
+            description="A gradient fill and a brand track. The ! is only needed because the switch's on-colour is a bg utility too."
+            code={`<Progress
+  value={68}
+  showLabel
+  classNames={{
+    track: "bg-ink/10",
+    bar: "bg-gradient-to-r from-[#FF5A36] to-[#F5A94A]",
+    label: "text-ink",
+  }}
+/>
+
+<Switch
+  checked
+  label="Notifications"
+  onChange={() => {}}
+  classNames={{ track: "!bg-[#7C3AED]" }}
+/>`}
+          >
+            <SlotsDemo />
+          </Specimen>
+        </div>
+        <p className="mt-4 text-[13px] leading-relaxed text-ink/50">
+          The full convention — <code className="font-mono">currentColor</code> state colours, the
+          gradient hover overlay, and what not to add — lives in{' '}
+          <a
+            href="https://github.com/FrameStudio-cloud/cite-ui/blob/main/THEMING.md"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-semibold text-ink underline decoration-ink/25 underline-offset-4 hover:decoration-accent"
+          >
+            THEMING.md
+          </a>
+          .
+        </p>
+      </section>
+
+      <section className="mt-10">
         <h2 className="font-mono text-[10px] uppercase tracking-[0.2em] text-ink/35">What not to do</h2>
         <ul className="mt-3 space-y-2.5 text-[15px] leading-relaxed text-ink-soft">
           <li className="flex gap-3">
@@ -108,7 +206,7 @@ export default function ThemingGuide() {
           </li>
           <li className="flex gap-3">
             <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-accent" />
-            Do not fork a component to change a colour; the variant plus <code className="rounded bg-ink/5 px-1.5 py-0.5 font-mono text-[12px] text-ink">className</code> covers it.
+            Do not fork a component to change a colour; a variant, a class slot or <code className="rounded bg-ink/5 px-1.5 py-0.5 font-mono text-[12px] text-ink">className</code> covers it.
           </li>
           <li className="flex gap-3">
             <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-accent" />

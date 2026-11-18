@@ -39,7 +39,7 @@ const iconMap = {
   error: 'alertCircle',
 }
 
-const Alert = ({ type = 'info', title, message, children, dismissible = false, onClose, className = '' }) => {
+const Alert = ({ type = 'info', title, message, children, dismissible = false, onClose, classNames = {}, className = '' }) => {
   const [dismissed, setDismissed] = useState(false)
   if (dismissed) return null
 
@@ -51,17 +51,17 @@ const Alert = ({ type = 'info', title, message, children, dismissible = false, o
   }
 
   return (
-    <div className={`flex items-start gap-3 border rounded-xl p-4 ${s.container} ${className}`}>
-      <span className={`flex-shrink-0 mt-0.5 ${s.icon}`}>
+    <div className={`flex items-start gap-3 border rounded-xl p-4 ${s.container} ${classNames.root || ''} ${className}`}>
+      <span className={`flex-shrink-0 mt-0.5 ${s.icon} ${classNames.icon || ''}`}>
         <Icon name={iconMap[type]} size={18} />
       </span>
-      <div className="flex-1 min-w-0">
-        {title && <p className={`text-sm font-semibold ${s.title}`}>{title}</p>}
-        {message && <p className={`text-sm ${s.message} ${title ? 'mt-1' : ''}`}>{message}</p>}
+      <div className={`flex-1 min-w-0 ${classNames.content || ''}`}>
+        {title && <p className={`text-sm font-semibold ${s.title} ${classNames.title || ''}`}>{title}</p>}
+        {message && <p className={`text-sm ${s.message} ${title ? 'mt-1' : ''} ${classNames.message || ''}`}>{message}</p>}
         {children}
       </div>
       {dismissible && (
-        <button onClick={handleClose} className={`flex-shrink-0 ${s.close}`} aria-label="Dismiss">
+        <button onClick={handleClose} className={`flex-shrink-0 ${s.close} ${classNames.close || ''}`} aria-label="Dismiss">
           <Icon name="x" size={16} />
         </button>
       )}

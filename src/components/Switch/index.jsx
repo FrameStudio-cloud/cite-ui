@@ -5,6 +5,7 @@ const Switch = ({
   onChange,
   disabled = false,
   size = 'md',
+  classNames = {},
   className = '',
   ...props
 }) => {
@@ -17,7 +18,7 @@ const Switch = ({
   const s = sizes[size] || sizes.md
 
   return (
-    <label className={`flex w-fit items-center gap-3 cursor-pointer ${disabled ? 'opacity-60 cursor-not-allowed' : ''} ${className}`}>
+    <label className={`flex w-fit items-center gap-3 cursor-pointer ${disabled ? 'opacity-60 cursor-not-allowed' : ''} ${classNames.root || ''} ${className}`}>
       <div className="relative">
         <input
           type="checkbox"
@@ -30,11 +31,11 @@ const Switch = ({
           aria-checked={checked}
           {...props}
         />
-        <div className={`${s.track} rounded-full transition-colors duration-200 ${checked ? 'bg-black dark:bg-white' : 'bg-gray-300 dark:bg-gray-600'}`}>
-          <div className={`${s.thumb} bg-white rounded-full shadow-sm transform transition-transform duration-200 ${checked ? s.translate : 'translate-x-0'} mt-0.5 ml-0.5`} />
+        <div className={`${s.track} rounded-full transition-colors duration-200 ${checked ? 'bg-black dark:bg-white' : 'bg-gray-300 dark:bg-gray-600'} ${classNames.track || ''}`}>
+          <div className={`${s.thumb} bg-white rounded-full shadow-sm transform transition-transform duration-200 ${checked ? s.translate : 'translate-x-0'} mt-0.5 ml-0.5 ${classNames.thumb || ''}`} />
         </div>
       </div>
-      {label && <span className="text-sm text-gray-700 dark:text-gray-300 select-none">{label}</span>}
+      {label && <span className={`text-sm text-gray-700 dark:text-gray-300 select-none ${classNames.label || ''}`}>{label}</span>}
     </label>
   )
 }

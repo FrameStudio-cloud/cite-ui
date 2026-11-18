@@ -1,7 +1,7 @@
 import { useRef, useState } from 'react'
 import { Icon } from '../Icon'
 
-const Tabs = ({ tabs = [], activeTab, onChange, variant = 'underline', size = 'md', className = '' }) => {
+const Tabs = ({ tabs = [], activeTab, onChange, variant = 'underline', size = 'md', classNames = {}, className = '' }) => {
   const [internalTab, setInternalTab] = useState(0)
   const refs = useRef([])
   const active = activeTab !== undefined ? activeTab : internalTab
@@ -66,7 +66,7 @@ const Tabs = ({ tabs = [], activeTab, onChange, variant = 'underline', size = 'm
   }
 
   return (
-    <div className={`flex ${variant === 'underline' ? 'border-b border-gray-200 dark:border-gray-700' : 'gap-1'} ${className}`} role="tablist">
+    <div className={`flex ${variant === 'underline' ? 'border-b border-gray-200 dark:border-gray-700' : 'gap-1'} ${classNames.root || ''} ${className}`} role="tablist">
       {tabs.map((tab, i) => {
         const isActive = i === active
         const disabled = tab.disabled
@@ -90,9 +90,13 @@ const Tabs = ({ tabs = [], activeTab, onChange, variant = 'underline', size = 'm
               setActive(i)
             }}
             onKeyDown={(event) => onKeyDown(event, i)}
-            className={`inline-flex items-center gap-2 whitespace-nowrap transition-all duration-150 ${sizeStyles[size] || sizeStyles.md} ${styleFn(isActive)} ${variant !== 'underline' ? 'rounded-lg' : ''} ${disabled ? 'opacity-40 cursor-not-allowed' : 'cursor-pointer'}`}
+            className={`inline-flex items-center gap-2 whitespace-nowrap transition-all duration-150 ${sizeStyles[size] || sizeStyles.md} ${styleFn(isActive)} ${variant !== 'underline' ? 'rounded-lg' : ''} ${disabled ? 'opacity-40 cursor-not-allowed' : 'cursor-pointer'} ${classNames.tab || ''} ${isActive ? classNames.activeTab || '' : ''}`}
           >
-            {tab.icon && (typeof tab.icon === 'string' ? <Icon name={tab.icon} size={14} /> : tab.icon)}
+            {tab.icon && (
+              <span className={`inline-flex items-center ${classNames.icon || ''}`}>
+                {typeof tab.icon === 'string' ? <Icon name={tab.icon} size={14} /> : tab.icon}
+              </span>
+            )}
             {tab.label}
           </Comp>
         )
