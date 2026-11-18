@@ -31,7 +31,7 @@ dependency in the published package.
 
 Fix these regardless of the redesign. The first one is a legal claim, not polish.
 
-- [ ] **Add `LICENSE` (MIT, © 2026 Lewis Irungu) to the repo.** The readme and
+- [ ] **Add `LICENSE` (MIT, © 2026 FrameStudio) to the repo.** The readme and
       `framestudio.co.ke/developers` both advertise MIT; GitHub reports
       `license: null`, so the grant is not actually published.
 - [ ] **Add `"license": "MIT"` to `package.json`** and bump to `1.2.1`, then
@@ -345,7 +345,7 @@ Rules:
 
 ### Phase 0 — Truth (half a day)
 
-- [x] Add `LICENSE` (MIT, © 2026 Lewis Irungu)
+- [x] Add `LICENSE` (MIT, © 2026 FrameStudio)
 - [x] Add `license`, `homepage`, `repository`, `bugs`, `keywords` and a real
       `description` to `package.json`
 - [x] Docs header/footer read `pkg.version`; docs count `54+` → `57`

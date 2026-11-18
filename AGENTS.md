@@ -18,6 +18,14 @@ No tests, linters, or typecheckers are configured.
 - **Dev playground** — `src/main.jsx` (development only, not shipped)
 - **Docs page** — `src/docs/main.jsx` via `docs.html` (development + buildable standalone)
 
+## Packaging
+
+`package.json` `files` ships `dist`, the library source (`src/components`,
+`src/hooks`, `src/utils`, `src/index.jsx`) and `THIRD-PARTY-NOTICES.md`.
+`src/docs`, `src/main.jsx` and `src/styles.css` are excluded — they are dev
+only, and shipping them would make consumers' Tailwind content glob scan
+docs-only classes. Check the result with `npm pack --dry-run`.
+
 ## File extensions
 
 All components use `.jsx`, including ones without JSX.
@@ -32,13 +40,13 @@ Each component lives in `src/components/<Name>/index.jsx`. Flat files (`src/comp
 | **Layout** | Container, Stack, Grid, Section, Divider |
 | **UI** | Card, Badge, Chip, Avatar, Alert, Spinner, Skeleton, Progress, EmptyState |
 | **Form** | TextField, Textarea, Select, Checkbox, Switch |
-| **Navigation** | Tabs, Accordion, Drawer, DropdownMenu, Breadcrumbs, Pagination, Tooltip, Table |
+| **Navigation** | Tabs, Accordion, Drawer, DropdownMenu, Breadcrumbs, Pagination, Tooltip, Table, SearchBar, BottomNav |
 | **Sections** | Hero, Features, FAQ, Pricing, Footer, Stats, Testimonials, ContactSection |
 | **Animation** | Animate, Motion |
 | **Mini Catalogue** | CatalogueCard, CatalogueGrid, SearchBar, BackToTop, TrustBar, AnnouncementBar, LocationMap |
 | **Hooks** | useForm, useLocalStorage, useMediaQuery, useFetch, useInView (internal) |
 | **Utils** | cn, formatKES, formatDate, slugify, truncate, generateId |
-| **Icons** | Icon component (45 icons) |
+| **Icons** | Icon component (49 icons) |
 
 ## Dynamic Tailwind classes
 
@@ -61,6 +69,13 @@ content: [
 ## Dependencies
 
 React 18+ is a peerDependency and devDependency only — never a runtime dependency. New dependencies must follow the same pattern.
+
+## Theming
+
+New components follow `THEMING.md`: neutral Tailwind defaults, `currentColor`
+state colours, a `classNames` slot map for brand surfaces, `style`/node escape
+hatches, and the optional `--cite-accent` variable. No theme context, no global
+stylesheet.
 
 ## Dev playground
 

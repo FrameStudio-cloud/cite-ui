@@ -6,6 +6,7 @@ import ComponentPage from './pages/ComponentPage'
 import GuidePage from './pages/GuidePage'
 import ThemingGuide from './pages/ThemingGuide'
 import MotionGuide from './pages/MotionGuide'
+import LicensePage from './pages/LicensePage'
 import NotFound from './pages/NotFound'
 import { byId } from './lib/registry'
 
@@ -52,6 +53,7 @@ export default function App() {
           <Route path="guide/installation" element={<GuidePage />} />
           <Route path="guide/theming" element={<ThemingGuide />} />
           <Route path="guide/motion" element={<MotionGuide />} />
+          <Route path="guide/license" element={<LicensePage />} />
           <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>

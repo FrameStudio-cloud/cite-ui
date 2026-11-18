@@ -28,6 +28,7 @@ export const GUIDES = [
   { id: 'getting-started', name: 'Installation', path: '/guide/installation' },
   { id: 'guide-theming', name: 'Theming', path: '/guide/theming' },
   { id: 'guide-motion', name: 'Motion', path: '/guide/motion' },
+  { id: 'guide-license', name: 'License', path: '/guide/license' },
 ]
 
 const GROUP_LABELS = {

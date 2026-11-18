@@ -132,7 +132,10 @@ function Footer() {
           </span>
         </div>
         <p className="font-mono text-[10px] uppercase tracking-[0.16em] text-ink/35">
-          MIT · built in Nairobi ·{' '}
+          <Link to="/guide/license" className="underline-offset-4 transition-colors hover:text-ink hover:underline">
+            MIT
+          </Link>{' '}
+          · built in Nairobi ·{' '}
           <a
             href="https://www.framestudio.co.ke"
             target="_blank"

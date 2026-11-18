@@ -1,6 +1,6 @@
 <p align="center">
   <h1 align="center">cite-ui</h1>
-  <p align="center">React components for Tailwind CSS — 39 components, hooks and utilities.</p>
+  <p align="center">React components for Tailwind CSS - 40 components, hooks and utilities.</p>
   <p align="center">Zero runtime dependencies. Class-based dark mode. MIT licensed.</p>
 </p>
 
@@ -152,6 +152,7 @@ Every component has a page with live examples, a light/dark surface toggle, prop
 | [Tooltip](https://cite-ui.framestudio.co.ke/components/tooltip) | Hover/focus tooltip in four positions |
 | [Table](https://cite-ui.framestudio.co.ke/components/table) | Data table with sorting, renderers, striping, row clicks |
 | [SearchBar](https://cite-ui.framestudio.co.ke/components/search-bar) | Search input with loading state and filter dropdowns |
+| [BottomNav](https://cite-ui.framestudio.co.ke/components/bottom-nav) | Mobile bottom navigation with labels, badges and an action tile |
 | [BackToTop](https://cite-ui.framestudio.co.ke/components/back-to-top) | Floating scroll-to-top button |
 
 ### Animation
@@ -163,12 +164,13 @@ Every component has a page with live examples, a light/dark surface toggle, prop
 
 ### Icons
 
-`Icon` ships 45 glyphs: `x`, `check`, `chevronDown`, `chevronRight`, `menu`, `cart`,
+`Icon` ships 49 glyphs: `x`, `check`, `chevronDown`, `chevronRight`, `menu`, `cart`,
 `alertCircle`, `info`, `alertTriangle`, `search`, `user`, `mail`, `phone`, `mapPin`,
 `star`, `heart`, `arrowRight`, `arrowLeft`, `arrowUp`, `arrowDown`, `upload`,
 `download`, `image`, `externalLink`, `globe`, `clock`, `trash`, `plus`, `minus`,
 `settings`, `edit`, `share`, `sun`, `moon`, `eye`, `eyeOff`, `copy`, `link`,
-`refreshCw`, `filter`, `slash`, `messageCircle`, `package`.
+`refreshCw`, `filter`, `slash`, `messageCircle`, `package`, `home`, `bell`,
+`compass`, `layers`.
 
 ```jsx
 import { Icon } from 'cite-ui'
@@ -216,8 +218,15 @@ Components ship neutral Tailwind defaults. Pass `className` to override:
 <Button label="Brand" className="!bg-[#FF5A36] !text-[#0B0B0B]" />
 ```
 
-There are no CSS variables and no stylesheet. See the
-[theming guide](https://cite-ui.framestudio.co.ke/guide/theming).
+Multi-part components also take a `classNames` slot map — `bar`, `activeItem`,
+`action` and so on — for surfaces that carry a brand colour or gradient.
+Components with an accent read the optional `--cite-accent` variable, with the
+FrameStudio vermilion as a fallback; leave it unset and nothing changes.
+
+There is no stylesheet to import. See the
+[theming guide](https://cite-ui.framestudio.co.ke/guide/theming) and
+[THEMING.md](https://github.com/FrameStudio-cloud/cite-ui/blob/main/THEMING.md)
+for the full convention.
 
 ## Requirements
 
@@ -228,4 +237,8 @@ There are no CSS variables and no stylesheet. See the
 
 ## License
 
-MIT © 2026 [Lewis Irungu](https://github.com/FrameStudio-cloud). See [LICENSE](./LICENSE).
+MIT © 2026 [FrameStudio](https://www.framestudio.co.ke). See [LICENSE](./LICENSE).
+
+The icon paths are derived from [Feather](https://feathericons.com) and the
+documentation loads fonts under their own licences. Both are recorded in
+[THIRD-PARTY-NOTICES.md](./THIRD-PARTY-NOTICES.md).
