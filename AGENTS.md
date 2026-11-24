@@ -2,6 +2,9 @@
 
 React component library — Vite library mode + Tailwind CSS v3.
 
+> Plans: `AUDIT.md` is the code/API upgrade plan (from building a real site against
+> the live stack, 24 Nov 2026). `PLAN.md` is the docs-site rebuild. Separate jobs.
+
 ## Commands
 
 - `npm run dev` — starts Vite dev playground (`index.html` → `src/main.jsx`) + docs page at `/docs.html`

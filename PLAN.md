@@ -5,6 +5,9 @@
 **Repo:** https://github.com/FrameStudio-cloud/cite-ui
 **Marketing page:** https://www.framestudio.co.ke/developers
 
+> Code and API upgrades raised by real use live in **`AUDIT.md`**. This file is the
+> docs-site rebuild only — do not merge the two.
+
 ---
 
 ## Why
