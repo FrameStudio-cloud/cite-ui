@@ -58,10 +58,13 @@ function SidebarContent({ query, setQuery, onNavigate }) {
 
       <nav aria-label="Documentation" className="flex-1 overflow-y-auto">
         {filtered.map((group) => (
-          <div key={group.name} className="mb-6">
-            <p className="mb-2 font-mono text-[10px] uppercase tracking-[0.2em] text-ink/35">
-              {group.name}
-            </p>
+          <div key={group.name} className="mb-7">
+            <div className="mb-2.5 flex items-baseline justify-between px-3">
+              <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-ink/40">
+                {group.name}
+              </p>
+              <span className="font-mono text-[9px] text-ink/25">{group.items.length}</span>
+            </div>
             <ul className="space-y-0.5">
               {group.items.map((item) => (
                 <li key={item.id}>
@@ -70,8 +73,8 @@ function SidebarContent({ query, setQuery, onNavigate }) {
                     onClick={onNavigate}
                     className={({ isActive }) =>
                       isActive
-                        ? 'block rounded-lg bg-accent/10 px-3 py-1.5 text-sm font-medium text-ink'
-                        : 'block rounded-lg px-3 py-1.5 text-sm text-ink/55 transition-colors hover:bg-ink/5 hover:text-ink'
+                        ? 'relative block rounded-xl bg-accent/10 px-3 py-2 text-[13px] font-semibold text-ink before:absolute before:bottom-1.5 before:left-0 before:top-1.5 before:w-[2px] before:rounded-full before:bg-accent'
+                        : 'block rounded-xl px-3 py-2 text-[13px] text-ink/55 transition-colors hover:bg-ink/5 hover:text-ink'
                     }
                   >
                     {item.name}
@@ -121,28 +124,31 @@ function SidebarContent({ query, setQuery, onNavigate }) {
 function Footer() {
   return (
     <footer className="border-t border-ink/10 bg-paper">
-      <div className="mx-auto flex max-w-[1400px] flex-col gap-4 px-4 py-8 sm:px-6 md:flex-row md:items-center md:justify-between lg:px-10">
-        <div className="flex items-center gap-2 font-display text-sm font-semibold tracking-[-0.02em] text-ink">
-          <span className="grid h-5 w-5 place-items-center rounded-md bg-ink text-accent">
-            <Icon name="package" size={11} />
+      <div className="mx-auto flex max-w-[1400px] flex-wrap items-center justify-between gap-x-6 gap-y-2 px-4 py-4 sm:px-6 lg:px-10">
+        <div className="flex items-center gap-2 font-display text-xs font-semibold tracking-[-0.01em] text-ink">
+          <span className="grid h-4 w-4 place-items-center rounded bg-ink text-accent">
+            <Icon name="package" size={9} />
           </span>
           cite<span className="text-ink/40">ui</span>
-          <span className="ml-1 font-mono text-[10px] font-normal uppercase tracking-[0.16em] text-ink/35">
-            v{version}
+          <span className="ml-1 font-mono text-[9px] font-normal uppercase tracking-[0.14em] text-ink/35">
+            v{version} ·{' '}
+            <Link to="/guide/license" className="underline-offset-2 transition-colors hover:text-ink hover:underline">
+              MIT
+            </Link>
           </span>
         </div>
-        <p className="font-mono text-[10px] uppercase tracking-[0.16em] text-ink/35">
-          <Link to="/guide/license" className="underline-offset-4 transition-colors hover:text-ink hover:underline">
-            MIT
-          </Link>{' '}
-          · built in Nairobi ·{' '}
+        <p className="flex items-center gap-1.5 font-mono text-[9px] uppercase tracking-[0.14em] text-ink/40">
+          Built by
           <a
             href="https://www.framestudio.co.ke"
             target="_blank"
             rel="noopener noreferrer"
-            className="underline-offset-4 transition-colors hover:text-ink hover:underline"
+            className="inline-flex items-center gap-1 font-semibold text-ink underline decoration-accent decoration-2 underline-offset-4 transition-colors hover:text-accent"
           >
             FrameStudio
+            <svg viewBox="0 0 24 24" width="10" height="10" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <path d="M6 18L18 6M9 6h9v9" />
+            </svg>
           </a>
         </p>
       </div>
@@ -264,7 +270,7 @@ export default function Shell() {
       </header>
 
       <div className="mx-auto flex max-w-[1400px] gap-10 px-4 sm:px-6 lg:px-10">
-        <aside className="hidden w-[232px] shrink-0 lg:block">
+        <aside className="hidden w-[248px] shrink-0 lg:block">
           <div className="sticky top-14 h-[calc(100vh-3.5rem)] overflow-y-auto py-8 pr-1">
             <SidebarContent query={query} setQuery={setQuery} />
           </div>
@@ -284,9 +290,15 @@ export default function Shell() {
             onClick={() => setMenuOpen(false)}
             className="absolute inset-0 bg-ink/40 backdrop-blur-sm"
           />
-          <div className="absolute inset-y-0 left-0 flex w-[86%] max-w-[320px] flex-col bg-paper p-4 shadow-2xl">
-            <div className="mb-4 flex items-center justify-between">
-              <span className="font-display text-base font-semibold">cite-ui docs</span>
+          <div className="absolute inset-y-0 left-0 flex w-[88%] max-w-[360px] flex-col bg-paper p-5 shadow-2xl">
+            <div className="mb-5 flex items-center justify-between border-b border-ink/10 pb-4">
+              <span className="flex items-center gap-2 font-display text-base font-semibold tracking-[-0.02em]">
+                <span className="grid h-5 w-5 place-items-center rounded-md bg-ink text-accent">
+                  <Icon name="package" size={11} />
+                </span>
+                cite<span className="text-ink/40">ui</span>
+                <span className="ml-1 font-mono text-[9px] font-normal uppercase tracking-[0.14em] text-ink/35">docs</span>
+              </span>
               <button
                 type="button"
                 onClick={() => setMenuOpen(false)}

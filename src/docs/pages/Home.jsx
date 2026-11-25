@@ -1,12 +1,10 @@
 import { Link } from 'react-router-dom'
 import { Icon } from '../../index'
-import { componentCount, groups, pathFor, version } from '../lib/registry'
+import { groups, pathFor } from '../lib/registry'
 import { usePageMeta } from '../lib/meta'
-import CodePanel from '../CodePanel'
-import LogoReveal from '../LogoReveal'
+import Hero from '../Hero'
 import { Preview } from '../previews'
 
-const REPO = 'https://github.com/FrameStudio-cloud/cite-ui'
 const NPM = 'https://www.npmjs.com/package/cite-ui'
 
 const SECTION_COPY = {
@@ -65,83 +63,16 @@ export default function Home() {
 
   return (
     <div className="max-w-[1200px]">
-      <section className="relative overflow-hidden rounded-[28px] bg-ink px-6 py-12 sm:px-10 sm:py-14">
-        <div className="pointer-events-none absolute -top-24 -left-24 h-72 w-72 rounded-full bg-accent/20 blur-[110px]" />
-        <div className="pointer-events-none absolute -right-2 top-1/2 hidden h-[420px] w-[320px] -translate-y-1/2 text-accent/30 sm:block lg:w-[360px]">
-          <LogoReveal className="h-full" />
-        </div>
+      <Hero />
 
-        <div className="relative max-w-2xl">
-          <p className="flex items-center gap-2.5 font-mono text-[10px] uppercase tracking-[0.22em] text-accent">
-            <span className="inline-block h-1.5 w-1.5 rounded-full bg-accent" />
-            FrameStudio · open source · v{version}
-          </p>
-
-          <h1 className="mt-5 font-display text-[2.4rem] font-semibold leading-[1.02] tracking-[-0.035em] text-paper sm:text-5xl lg:text-[3.4rem]">
-            Build it once.{' '}
-            <span className="font-serif italic text-accent">Use it everywhere.</span>
-          </h1>
-
-          <p className="mt-5 max-w-xl text-lg leading-relaxed text-paper/55">
-            cite-ui is our React component library for Tailwind — {componentCount} components,
-            zero runtime dependencies, and the same colours and type as the studio that builds it.
-          </p>
-
-          <div className="mt-8 max-w-sm">
-            <CodePanel code="npm install cite-ui" compact />
-          </div>
-
-          <div className="mt-5 flex flex-wrap items-center gap-3">
-            <a
-              href="#components"
-              className="inline-flex items-center gap-2 rounded-full bg-accent px-5 py-2.5 text-sm font-semibold text-ink transition-colors hover:bg-accent-deep"
-            >
-              Browse components
-              <Icon name="arrowDown" size={14} />
-            </a>
-            <Link
-              to="/guide/installation"
-              className="inline-flex items-center gap-2 rounded-full border border-paper/20 px-5 py-2.5 text-sm font-semibold text-paper transition-colors hover:border-accent/60 hover:text-accent"
-            >
-              Installation
-            </Link>
-            <a
-              href={REPO}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 text-sm font-semibold text-paper/50 transition-colors hover:text-paper"
-            >
-              GitHub
-              <Icon name="externalLink" size={12} />
-            </a>
-          </div>
-
-          <dl className="mt-10 grid max-w-lg grid-cols-2 gap-x-8 gap-y-4 border-t border-paper/10 pt-6 sm:grid-cols-4">
-            {[
-              { value: componentCount, label: 'components' },
-              { value: '0', label: 'runtime deps' },
-              { value: '22.5 kB', label: 'gzip, ESM' },
-              { value: 'MIT', label: 'license' },
-            ].map((stat) => (
-              <div key={stat.label}>
-                <dd className="font-display text-xl font-semibold text-paper">{stat.value}</dd>
-                <dt className="mt-0.5 font-mono text-[8px] uppercase tracking-[0.16em] text-paper/45">
-                  {stat.label}
-                </dt>
-              </div>
-            ))}
-          </dl>
-        </div>
-      </section>
-
-      <div id="components" className="mt-14 scroll-mt-20 space-y-12">
+      <div id="components" className="mt-16 scroll-mt-20 space-y-14">
         {sections.map((group) => {
           const copy = SECTION_COPY[group.name] || { title: group.name, desc: '' }
           return (
             <section key={group.name}>
               <div className="flex flex-col gap-2 border-b border-ink/10 pb-4 sm:flex-row sm:items-end sm:justify-between">
                 <div>
-                  <h2 className="font-display text-2xl font-semibold tracking-[-0.02em] text-ink">
+                  <h2 className="font-display text-[26px] font-semibold tracking-[-0.025em] text-ink">
                     {copy.title}
                   </h2>
                   {copy.desc && (
@@ -153,36 +84,39 @@ export default function Home() {
                 </span>
               </div>
 
-              <div className="mt-5 grid grid-cols-2 gap-3 md:grid-cols-3 xl:grid-cols-5">
-                {group.items.map((entry) => (
+              <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
+                {group.items.map((entry, index) => (
                   <Link
                     key={entry.id}
                     to={pathFor(entry)}
-                    className="group flex flex-col overflow-hidden rounded-2xl border border-ink/10 bg-paper transition-all duration-200 hover:-translate-y-0.5 hover:border-ink/25 hover:shadow-[0_18px_40px_-30px_rgba(11,11,11,0.45)]"
+                    className="group relative flex flex-col overflow-hidden rounded-[22px] border border-ink/10 bg-white transition-all duration-300 hover:-translate-y-1 hover:border-ink/25 hover:shadow-[0_26px_50px_-30px_rgba(11,11,11,0.5)]"
                   >
-                    <div className="relative flex h-32 items-center justify-center overflow-hidden bg-cream/40 p-3">
+                    <div className="relative flex h-44 items-center justify-center overflow-hidden bg-cream/40 p-5 sm:h-48">
                       <div
                         aria-hidden="true"
-                        className="pointer-events-none absolute inset-0 opacity-50 [background-image:radial-gradient(circle_at_1px_1px,rgba(11,11,11,0.10)_1px,transparent_0)] [background-size:16px_16px]"
+                        className="pointer-events-none absolute inset-0 opacity-60 [background-image:radial-gradient(circle_at_1px_1px,rgba(11,11,11,0.10)_1px,transparent_0)] [background-size:18px_18px]"
                       />
+                      <span className="absolute left-4 top-3 font-mono text-[9px] uppercase tracking-[0.16em] text-ink/30">
+                        {String(index + 1).padStart(2, '0')}
+                      </span>
+                      <span className="absolute right-3 top-3 grid h-7 w-7 place-items-center rounded-full border border-ink/10 bg-white/80 text-ink/40 opacity-0 transition-all group-hover:opacity-100 group-hover:text-accent">
+                        <Icon name="arrowUp" size={12} className="rotate-45" />
+                      </span>
                       <div className="relative h-full w-full">
                         <Preview id={entry.id} />
                       </div>
                     </div>
-                    <div className="flex items-center justify-between gap-2 border-t border-ink/10 px-3 py-2.5">
-                      <div className="min-w-0">
-                        <h3 className="truncate font-display text-[13px] font-semibold text-ink">
-                          {entry.name}
-                        </h3>
-                        <p className="font-mono text-[8px] uppercase tracking-[0.14em] text-ink/40">
-                          {meta(entry)}
-                        </p>
-                      </div>
-                      <Icon
-                        name="arrowRight"
-                        size={12}
-                        className="shrink-0 text-ink/25 transition-all group-hover:translate-x-0.5 group-hover:text-accent"
-                      />
+                    <div className="flex flex-1 flex-col border-t border-ink/10 px-4 py-3.5">
+                      <h3 className="font-display text-[15px] font-semibold tracking-[-0.01em] text-ink">
+                        {entry.name}
+                      </h3>
+                      <p className="mt-0.5 font-mono text-[9px] uppercase tracking-[0.14em] text-ink/40">
+                        {meta(entry)}
+                      </p>
+                      <span className="mt-3 inline-flex items-center gap-1.5 text-[11px] font-medium text-ink/40 transition-colors group-hover:text-accent">
+                        Open component
+                        <Icon name="arrowRight" size={12} />
+                      </span>
                     </div>
                   </Link>
                 ))}
@@ -192,11 +126,19 @@ export default function Home() {
         })}
       </div>
 
-      <p className="mt-12 border-t border-ink/10 pt-6 font-mono text-[9px] uppercase tracking-[0.16em] text-ink/35">
+      <p className="mt-14 border-t border-ink/10 pt-6 font-mono text-[9px] uppercase tracking-[0.16em] text-ink/35">
         <a href={NPM} target="_blank" rel="noopener noreferrer" className="transition-colors hover:text-ink">
           npm i cite-ui
         </a>{' '}
-        · MIT · built in Nairobi
+        · MIT · built by{' '}
+        <a
+          href="https://www.framestudio.co.ke"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="transition-colors hover:text-ink"
+        >
+          FrameStudio
+        </a>
       </p>
     </div>
   )

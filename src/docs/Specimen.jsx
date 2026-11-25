@@ -115,7 +115,7 @@ export default function Specimen({ id, title, description, code, children }) {
       <div id={panelId} role="tabpanel" aria-labelledby={tabId(view)}>
         {view === 'preview' ? (
           <div className={surface === 'dark' ? 'dark' : undefined}>
-            <div className="flex min-h-[180px] items-center bg-white px-5 py-8 dark:bg-gray-950 sm:px-8">
+            <div className="flex min-h-[220px] items-center bg-white px-5 py-10 dark:bg-gray-950 sm:px-8">
               <div className="w-full">{children}</div>
             </div>
           </div>

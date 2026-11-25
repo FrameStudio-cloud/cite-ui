@@ -40,14 +40,23 @@ export function groupLabel(name) {
   return GROUP_LABELS[name] || name
 }
 
+/**
+ * Sidebar navigation is intentionally broader than the catalogue grouping on
+ * the home page: three entry points (Operations / Components / Utilities)
+ * instead of one link per category.
+ */
+const COMPONENT_GROUPS = ['Legacy / Enhanced', 'Layout', 'UI', 'Form', 'Navigation', 'Animation']
+const UTILITY_GROUPS = ['Hooks', 'Utilities', 'Icons']
+
+const navItems = (names) =>
+  entries
+    .filter((entry) => names.includes(entry.group))
+    .map((item) => ({ ...item, path: pathFor(item) }))
+
 export const navGroups = [
-  { name: 'Getting started', items: GUIDES },
-  ...groups
-    .filter((group) => group.name !== 'Getting Started')
-    .map((group) => ({
-      name: groupLabel(group.name),
-      items: group.items.map((item) => ({ ...item, path: pathFor(item) })),
-    })),
+  { name: 'Operations', items: GUIDES },
+  { name: 'Components', items: navItems(COMPONENT_GROUPS) },
+  { name: 'Utilities', items: navItems(UTILITY_GROUPS) },
 ]
 
 /** Uppercase exports are components; hooks and helpers are lowercase. */
