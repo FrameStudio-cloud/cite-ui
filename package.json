@@ -41,7 +41,8 @@
     "THIRD-PARTY-NOTICES.md"
   ],
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --config vite.docs.config.js --open",
+    "dev:playground": "vite",
     "build": "vite build",
     "preview": "vite preview",
     "docs:dev": "vite --config vite.docs.config.js --open /docs.html",

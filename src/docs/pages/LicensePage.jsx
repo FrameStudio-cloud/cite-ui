@@ -24,11 +24,13 @@ export default function LicensePage() {
   )
 
   return (
-    <article className="max-w-[860px]">
+    <article className="mx-auto max-w-[900px]">
       <nav aria-label="Breadcrumb" className="font-mono text-[10px] uppercase tracking-[0.16em] text-ink/35">
-        <Link to="/" className="transition-colors hover:text-ink">Docs</Link>
+        <Link to="/" className="transition-colors hover:text-ink">Overview</Link>
         <span className="mx-2">/</span>
-        <span>Getting started</span>
+        <Link to="/guide/installation" className="transition-colors hover:text-ink">Guides</Link>
+        <span className="mx-2">/</span>
+        <span>License</span>
       </nav>
 
       <header className="mt-5 border-b border-ink/10 pb-8">

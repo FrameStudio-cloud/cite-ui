@@ -7,10 +7,11 @@ React component library — Vite library mode + Tailwind CSS v3.
 
 ## Commands
 
-- `npm run dev` — starts Vite dev playground (`index.html` → `src/main.jsx`) + docs page at `/docs.html`
+- `npm run dev` — starts the docs dashboard at `/` (Vite with the docs config)
+- `npm run dev:playground` — starts the dev playground (`index.html` → `src/main.jsx`)
 - `npm run build` — builds library to `dist/cite-ui.es.js` + `dist/cite-ui.umd.js`
 - `npm run preview` — preview the built bundle
-- `npm run docs:dev` — starts dev server, opens `/docs.html`
+- `npm run docs:dev` — starts the docs dev server, opens `/docs.html`
 - `npm run docs:build` — builds standalone docs page to `dist-docs/`
 
 No tests, linters, or typecheckers are configured.

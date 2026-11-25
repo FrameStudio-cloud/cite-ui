@@ -3,6 +3,7 @@ import { BrowserRouter, Navigate, Route, Routes, useLocation, useNavigate } from
 import Shell from './Shell'
 import Home from './pages/Home'
 import ComponentPage from './pages/ComponentPage'
+import ComponentsIndex from './pages/ComponentsIndex'
 import GuidePage from './pages/GuidePage'
 import ThemingGuide from './pages/ThemingGuide'
 import MotionGuide from './pages/MotionGuide'
@@ -48,6 +49,7 @@ export default function App() {
       <Routes>
         <Route element={<Shell />}>
           <Route index element={<Home />} />
+          <Route path="components" element={<ComponentsIndex />} />
           <Route path="components/:id" element={<ComponentPage />} />
           <Route path="guide" element={<Navigate to="/guide/installation" replace />} />
           <Route path="guide/installation" element={<GuidePage />} />

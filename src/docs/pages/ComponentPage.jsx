@@ -45,11 +45,13 @@ export default function ComponentPage() {
     : [{ id: entry.id, title: 'Example' }]
 
   return (
-    <div className="xl:grid xl:grid-cols-[minmax(0,1fr)_150px] xl:gap-8">
-      <article className="min-w-0 max-w-[860px]">
+    <div className="mx-auto max-w-[900px]">
+      <article className="min-w-0">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <nav aria-label="Breadcrumb" className="font-mono text-[10px] uppercase tracking-[0.16em] text-ink/35">
-            <Link to="/" className="transition-colors hover:text-ink">Docs</Link>
+            <Link to="/" className="transition-colors hover:text-ink">Overview</Link>
+            <span className="mx-2">/</span>
+            <Link to="/components" className="transition-colors hover:text-ink">Components</Link>
             <span className="mx-2">/</span>
             <span>{groupLabel(entry.group)}</span>
           </nav>
@@ -81,6 +83,29 @@ export default function ComponentPage() {
             </div>
           )}
         </header>
+
+        <div className="mt-5 flex flex-wrap items-center gap-2">
+          <span className="font-mono text-[9px] uppercase tracking-[0.16em] text-ink/35">
+            On this page
+          </span>
+          {railItems.map((item) => (
+            <a
+              key={item.id}
+              href={`#example-${item.id}`}
+              className="rounded-full border border-ink/10 bg-white px-2.5 py-1 text-[11px] text-ink/55 transition-colors hover:border-ink/25 hover:text-ink"
+            >
+              {item.title}
+            </a>
+          ))}
+          {entry.props.length > 0 && (
+            <a
+              href="#props"
+              className="rounded-full border border-ink/10 bg-white px-2.5 py-1 text-[11px] text-ink/55 transition-colors hover:border-ink/25 hover:text-ink"
+            >
+              Props
+            </a>
+          )}
+        </div>
 
         <section className="mt-8">
           <div className="flex items-baseline justify-between gap-4">
@@ -154,31 +179,6 @@ export default function ComponentPage() {
           )}
         </nav>
       </article>
-
-      <aside className="hidden xl:block">
-        <div className="sticky top-20">
-          <p className="font-mono text-[9px] uppercase tracking-[0.18em] text-ink/35">On this page</p>
-          <ul className="mt-3 space-y-2 border-l border-ink/10 pl-3">
-            {railItems.map((item) => (
-              <li key={item.id}>
-                <a
-                  href={`#example-${item.id}`}
-                  className="block text-[12px] leading-snug text-ink/50 transition-colors hover:text-ink"
-                >
-                  {item.title}
-                </a>
-              </li>
-            ))}
-            {entry.props.length > 0 && (
-              <li>
-                <a href="#props" className="block text-[12px] text-ink/50 transition-colors hover:text-ink">
-                  Props
-                </a>
-              </li>
-            )}
-          </ul>
-        </div>
-      </aside>
     </div>
   )
 }

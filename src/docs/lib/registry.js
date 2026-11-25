@@ -40,24 +40,66 @@ export function groupLabel(name) {
   return GROUP_LABELS[name] || name
 }
 
-/**
- * Sidebar navigation is intentionally broader than the catalogue grouping on
- * the home page: three entry points (Operations / Components / Utilities)
- * instead of one link per category.
- */
-const COMPONENT_GROUPS = ['Legacy / Enhanced', 'Layout', 'UI', 'Form', 'Navigation', 'Animation']
-const UTILITY_GROUPS = ['Hooks', 'Utilities', 'Icons']
-
-const navItems = (names) =>
-  entries
-    .filter((entry) => names.includes(entry.group))
-    .map((item) => ({ ...item, path: pathFor(item) }))
-
-export const navGroups = [
-  { name: 'Operations', items: GUIDES },
-  { name: 'Components', items: navItems(COMPONENT_GROUPS) },
-  { name: 'Utilities', items: navItems(UTILITY_GROUPS) },
+/** Cards shown on the dashboard: one per catalogue category. */
+export const CATEGORIES = [
+  {
+    group: 'Legacy / Enhanced',
+    title: 'Base components',
+    blurb: 'Buttons, navigation, dialogs and notifications.',
+    icon: 'package',
+  },
+  {
+    group: 'Layout',
+    title: 'Layout',
+    blurb: 'Containers, stacks, grids, sections and dividers.',
+    icon: 'layers',
+  },
+  {
+    group: 'UI',
+    title: 'UI',
+    blurb: 'Cards, badges, avatars, alerts and loading states.',
+    icon: 'heart',
+  },
+  {
+    group: 'Form',
+    title: 'Forms',
+    blurb: 'Inputs, selects, checkboxes and toggles.',
+    icon: 'edit',
+  },
+  {
+    group: 'Navigation',
+    title: 'Navigation',
+    blurb: 'Tabs, tables, drawers, menus and pagination.',
+    icon: 'compass',
+  },
+  {
+    group: 'Animation',
+    title: 'Motion',
+    blurb: 'Entrances and imperative transitions.',
+    icon: 'refreshCw',
+  },
+  {
+    group: 'Hooks',
+    title: 'Hooks',
+    blurb: 'Form state, storage, media queries and fetching.',
+    icon: 'link',
+  },
+  {
+    group: 'Utilities',
+    title: 'Utilities',
+    blurb: 'Formatting, slugs, truncation and ids.',
+    icon: 'settings',
+  },
+  {
+    group: 'Icons',
+    title: 'Icons',
+    blurb: '49 stroke glyphs, no icon package.',
+    icon: 'star',
+  },
 ]
+
+/** Every catalogue entry, minus the installation guide. */
+export const componentEntries = entries.filter((entry) => entry.group !== 'Getting Started')
 
 /** Uppercase exports are components; hooks and helpers are lowercase. */
 export const componentCount = Object.keys(CiteUI).filter((name) => /^[A-Z]/.test(name)).length
